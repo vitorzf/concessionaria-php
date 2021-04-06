@@ -1,0 +1,58 @@
+<?php
+    class Database{
+
+        private $db = null;
+
+        public function __construct(){
+
+            $this->db = new mysqli("localhost", "root", "", "concessionaria");
+
+            if($this->db->connect_errno){
+                throw new Exception("Erro ao conectar no banco de dados:\n {$this->db->connect_error}", 1);
+                exit();
+            }
+
+        }
+
+        public function insert($tabela = null, $campos = null){
+            if(empty($tabela)){
+                throw new Exception("Erro: Tabela não especificada", 1);
+                exit();
+            }
+
+            if(empty($campos)){
+                throw new Exception("Erro: Nenhum campo foi enviado para o Insert", 1);
+                exit();
+            }
+
+            if(!empty($campos[0])){
+                throw new Exception("Erro: Especifique o nome do campo que o valor deverá ser inserido na posição do array", 1);
+                exit();
+            }
+
+            $_campos = [];
+            $_valores = [];
+
+            foreach($campos as $field => $value){
+                $_campos[] = $field;
+                $_valores[] = (empty($value) ? null : $value);
+            }
+
+            $_campos = implode(",", $_campos);
+            $_valores = implode("','", $_valores);
+
+            $sql = "INSERT INTO ({$_campos}) VALUES ('{$_valores}')";
+
+            var_dump($sql);
+            exit;
+
+            if ($this->db->query($sql) === TRUE) {
+                return true;
+            } else {
+                throw new Exception("Erro: {$this->db->error}", 1);
+                exit();
+            }
+
+        }
+    }
+?>
