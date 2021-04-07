@@ -89,7 +89,6 @@
 </div>
 
 <script>
-
     var model_usuarios = '<?= $conf->base_url(); ?>request/model/usuarios';
 
     $(document).ready(function() {
@@ -125,6 +124,41 @@
 
             }, 'json')
 
+        });
+
+        $('#txtUsuarioEmail').keypress(function(e) {
+            if (e.which == 13) {
+                $('#realizarLogin').click();
+            }
+        });
+
+        $('#txtUsuarioSenha').keypress(function(e) {
+            if (e.which == 13) {
+                $('#realizarLogin').click();
+            }
+        });
+
+        $('#txtUsuarioCadastro').keypress(function(e) {
+            if (e.which == 13) {
+                $('#finalizarCadastro').click();
+            }
+        });
+
+        $('#txtEmailCadastro').keypress(function(e) {
+            if (e.which == 13) {
+                $('#finalizarCadastro').click();
+            }
+        });
+        $('#txtSenhaCadastro').keypress(function(e) {
+            if (e.which == 13) {
+                $('#finalizarCadastro').click();
+            }
+        });
+
+        $('#txtSenhaRepCadastro').keypress(function(e) {
+            if (e.which == 13) {
+                $('#finalizarCadastro').click();
+            }
         });
 
         $(document).on("click", "#realizarLogin", function() {
