@@ -1,10 +1,38 @@
 <?php
-
-require getcwd() . "/classes/Config.php";
+session_start();
+foreach (glob("./classes/*.php") as $filename) {
+    require $filename;
+}
 
 $conf = new Config();
+$session = new Session();
+
+$GLOBALS['database'] = new Database();
+$GLOBALS['session'] = $session;
+
+$path = "http://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+$str = str_replace("http://", "", $conf->base_url());
+$str = str_replace("//", "/", $str);
+
+$p = explode("http://{$str}", $path);
+
+if(!empty($p[1])){
+
+    $z = explode("/", $p[1]);
+
+    if($z[0] == "request"){
+        
+        $caminho = getcwd()."/{$z[1]}/{$z[2]}.php";
+        require $caminho;
+
+        $z[3]();
+        die();
+    }
+}
+
 
 $link = strtolower($_SERVER['REQUEST_URI']);
+
 $params = explode("/", $link);
 
 $arquivo = $params[2];
@@ -12,7 +40,7 @@ $complemento = "";
 
 if (!empty($params[3])) {
 
-    $comp = ucfirst($params[4]);
+    $comp = ucfirst($params[3]);
 
     $complemento = " - {$comp}";
 }
@@ -40,7 +68,6 @@ if(empty($nome_pagina)){
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="<?= $conf->base_url("assets/javascript.js") ?>"></script>
 
     <title><?= $nome_pagina ?></title>
 </head>
@@ -59,13 +86,6 @@ if(empty($nome_pagina)){
     <script>
         $(document).ready(function() {
             $('nav').addClass('black');
-            // var url_img = "<?= $conf->base_url("assets/imagens/concessionaria.jpg") ?>";
-
-            // var background = {
-            //     "background": `url(${url_img})`
-            // };
-
-            // $('header').css(background);
 
             $(".menu-icon").on("click", function() {
                 $("nav ul").toggleClass("showing");
