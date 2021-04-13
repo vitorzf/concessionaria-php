@@ -29,9 +29,9 @@
         $senha = md5(post('senha'));
 
         if(filter_var($credencial, FILTER_VALIDATE_EMAIL)){
-            $sql = "SELECT * FROM usuarios WHERE email = '{$credencial}' and senha = '{$senha}'";
+            $sql = "SELECT * FROM funcionario WHERE email = '{$credencial}' and senha = '{$senha}'";
         }else{
-            $sql = "SELECT * FROM usuarios WHERE nome = '{$credencial}' and senha = '{$senha}'";
+            die(json_encode(['erro' => true]));
         }
 
         $response = (array) $GLOBALS['database']->retornaLinha($sql);
@@ -39,11 +39,11 @@
         if(!empty($response)){
             $set_sessao = $GLOBALS['session']->setSessionArray($response);
             if($set_sessao){
-                die(json_encode(['login' => true]));
+                die(json_encode(['erro' => false]));
             }
-            echo json_encode(['login' => false]);
+            echo json_encode(['erro' => true]);
         }else{
-            echo json_encode(['login' => false]);
+            echo json_encode(['erro' => true]);
         }
 
     }

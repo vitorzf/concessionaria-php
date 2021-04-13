@@ -62,39 +62,6 @@
     var model_usuarios = '<?= $conf->base_url(); ?>request/model/usuarios';
 
     $(document).ready(function() {
-        $(document).on("click", "#finalizarCadastro", function() {
-
-            var usuario = $('#txtUsuarioCadastro').val();
-            var email = $('#txtEmailCadastro').val();
-            var senha = $('#txtSenhaCadastro').val();
-            var senha2 = $('#txtSenhaRepCadastro').val();
-
-            if (senha != senha2) {
-                alert("As senhas devem ser identicas");
-                return;
-            }
-
-            if (usuario.length < 4) {
-                alert("O nome de usuário deve ter no mínimo 5 caracteres");
-                return;
-            }
-
-            $.post(`${model_usuarios}/cadastrarUsuario`, {
-                usuario,
-                email,
-                senha
-            }, function(data) {
-                if (data.erro) {
-                    alert("Erro ao realizar cadastro!");
-                    return;
-                } else {
-                    alert("Cadastro realizado com sucesso!");
-                    voltarLogin();
-                }
-
-            }, 'json')
-
-        });
 
         $('#txtUsuarioEmail').keypress(function(e) {
             if (e.which == 13) {
