@@ -1,7 +1,7 @@
 <?php
 session_start();
-foreach (glob("./classes/*.php") as $filename) {
-    require $filename;
+foreach (glob("./classes/*.php") as $nome_arquivo) {
+    require $nome_arquivo;
 }
 
 $conf = new Config();

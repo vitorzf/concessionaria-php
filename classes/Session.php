@@ -8,6 +8,7 @@
 
         public function setSessionArray($campos = [])
         {
+
             if (empty($campos)) {
                 throw new Exception("Erro: Nenhum campo foi enviado para setar a sessão", 1);
                 exit();

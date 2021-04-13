@@ -102,5 +102,15 @@
             }
 
         }
+
+        public function executasql($sql){
+            if ($this->db->query($sql) === TRUE) {
+                return true;
+            } else {
+                throw new Exception("Erro: {$this->db->error}", 1);
+                exit();
+            }
+        }
+
     }
 ?>

@@ -5,7 +5,7 @@
                 <i class="fa fa-bars fa-2x"></i>
             </div>
             <div class="logo">
-                TOPZERA
+                Concessionária
             </div>
             <div class="menu">
                 <ul>
@@ -28,7 +28,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="tituloModalLoginCadastro">Login</h5>
+                <h5 class="modal-title" id="tituloModalLoginCadastro">Login de colaborador</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -49,36 +49,6 @@
                         <div class="text-center" style="width:100%;">
                             <button id="realizarLogin" class="btn btn-success" data-loading-text="Validando...">
                                 Entrar
-                            </button>
-                            <p style="margin-top:15px; font-size:14px;">
-                                Não tem uma conta? <a href="javascript:criarConta()">Clique aqui!</a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="container-fluid" id="divCadastro" style="display:none;">
-                    <div class="row">
-                        <div class="col-xs-10 col-sm-10 col-md-8 col-lg-8 offset-xs-1 offset-sm-1 offset-md-2 offset-lg-2">
-                            <div class="form-group">
-                                <label for="txtUsuarioCadastro">Nome de usuário</label>
-                                <input class="form-control" type="text" id="txtUsuarioCadastro">
-                            </div>
-                            <div class="form-group">
-                                <label for="txtEmailCadastro">Email</label>
-                                <input class="form-control" type="email" id="txtEmailCadastro">
-                            </div>
-                            <div class="form-group">
-                                <label for="txtSenhaCadastro">Senha</label>
-                                <input class="form-control" type="password" id="txtSenhaCadastro">
-                            </div>
-                            <div class="form-group">
-                                <label for="txtSenhaRepCadastro">Repita a senha</label>
-                                <input class="form-control" type="password" id="txtSenhaRepCadastro">
-                            </div>
-                        </div>
-                        <div class="text-center" style="width:100%;">
-                            <button id="finalizarCadastro" class="btn btn-success" data-loading-text="Aguarde...">
-                                Finalizar Cadastro
                             </button>
                         </div>
                     </div>
@@ -138,29 +108,6 @@
             }
         });
 
-        $('#txtUsuarioCadastro').keypress(function(e) {
-            if (e.which == 13) {
-                $('#finalizarCadastro').click();
-            }
-        });
-
-        $('#txtEmailCadastro').keypress(function(e) {
-            if (e.which == 13) {
-                $('#finalizarCadastro').click();
-            }
-        });
-        $('#txtSenhaCadastro').keypress(function(e) {
-            if (e.which == 13) {
-                $('#finalizarCadastro').click();
-            }
-        });
-
-        $('#txtSenhaRepCadastro').keypress(function(e) {
-            if (e.which == 13) {
-                $('#finalizarCadastro').click();
-            }
-        });
-
         $(document).on("click", "#realizarLogin", function() {
             var emailuser = $('#txtUsuarioEmail').val();
             if (emailuser.length == 0) {
@@ -197,13 +144,6 @@
         $('#txtSenhaRepCadastro').val("");
     }
 
-    function voltarLogin() {
-        limparCampos();
-        $('#tituloModalLoginCadastro').html("Login");
-        $('#divCadastro').hide();
-        $('#divLogin').show();
-    }
-
     function modalLogin() {
         limparCampos();
         $('#tituloModalLoginCadastro').html("Login");
@@ -219,12 +159,4 @@
         }, 'json')
     }
 
-    function criarConta() {
-        limparCampos();
-        $('#tituloModalLoginCadastro').html("<a href=\"javascript:voltarLogin()\"><i class=\"fa fa-chevron-left\"></i> Voltar</a>");
-        $('#divLogin').hide();
-        $('#divCadastro').show();
-
-
-    }
 </script>
