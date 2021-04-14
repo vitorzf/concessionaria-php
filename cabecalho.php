@@ -14,7 +14,7 @@
                     if (!$session->logado()) {
                         echo "<li><a href=\"javascript:modalLogin()\">Login/Cadastro</a></li>";
                     } else {
-                        echo "<li><a href=\"{$conf->base_url("painel")}\">Painel</a></li>
+                        echo "<li><a href=\"{$conf->base_url("dashboard")}\">Painel</a></li>
                               <li><a href=\"javascript:logoff()\">Sair</a></li>";
                     }
                     ?>

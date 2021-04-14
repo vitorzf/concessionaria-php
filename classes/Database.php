@@ -5,7 +5,7 @@
 
         public function __construct(){
 
-            $this->db = new mysqli("localhost", "root", "", "concessionaria");
+            $this->db = new mysqli("localhost", "root", "", "projetoconcessionaria");
 
             if($this->db->connect_errno){
                 throw new Exception("Erro ao conectar no banco de dados:\n {$this->db->connect_error}", 1);

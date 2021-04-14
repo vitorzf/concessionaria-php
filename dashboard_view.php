@@ -1,35 +1,148 @@
 <?php
-   session_start();
-   foreach (glob("./classes/*.php") as $nome_arquivo) {
-       require $nome_arquivo;
-   }
+   if (!$session->logado()){
+      echo "É necessário estar logado para acessar esta área.";
+      exit;
+   }  
 ?>
-<!doctype html>
-<html lang="pt-br">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    
 
-    <title>Registro de venda</title>
-
-    <!-- Principal CSS do Bootstrap -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-
-  </head>
-
-  <body class="bg-light">
 
     <div class="container">
-      <div class="py-5 text-center">
-        <h2>Formulário de registro</h2>
+      <div class="py-3 text-center">
+        <h2>Bem vindo ao painel inicial!</h2>
       </div>
 
-        <div class="col-md-8 order-md-1">
-          <h4 class="mb-3">Registro de venda</h4>
-          <form class="needs-validation" novalidate>
+      <div class="py-3 text-center">
+          <h4 class="mb-3">O que você deseja realizar?</h4>
+          </div>
+
+          <div class="l-estilo l-estilo1 l-antes"></div>
+
+          <div class="container-fluid container-conteudo">
+              <div class="row">
+          <div class="col-md-3">
+
+          <div class="panel-group" id="accordion-menu" role="tablist" aria-multiselectable="true">
+          <div class="panel">
+                    <div class="panel-heading" role="tab" id="menu_categoria_1">
+                        <div class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion-menu"  href="#categoria_1" aria-expanded="true" aria-controls="categoria_1">
+                                <i class="fa fa-caret-down"></i>                                ESTOQUE                            </a>
+                        </div>
+                    </div>
+                    <div id="categoria_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="menu_categoria_1">
+
+                        <div class="panel-group" id="accordion-menu_" role="tablist" aria-multiselectable="true">
+
+                                                    <div class="panel">
+                                <div class="panel-heading" role="tab" id="menu_grupo_4">
+                                    <div class="panel-title">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion-menu_"  href="#grupo_4" aria-expanded="true" aria-controls="grupo_4">
+                                            <i class="fa fa-caret-down"></i>                                            Editar estoque                                        </a>
+                                    </div>
+                                </div>
+                                <div id="grupo_4" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="menu_grupo_4">
+                                                                    <div class="panel-item active" id_categoria="1" id_grupo="4" id_documentacao="privacidade" >
+                                        <a href="">
+                                            <i class="fa fa-caret-right"></i>Cadastrar carro                                     </a>
+                                  
+                                    </div>
+                                                                    </div>
+
+                                <div id="grupo_4" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="menu_grupo_4">
+                                                                    <div class="panel-item active" id_categoria="1" id_grupo="4" id_documentacao="privacidade" >
+                                        <a href="">
+                                            <i class="fa fa-caret-right"></i>Atualizar informações do carro                                      </a>
+                                  
+                                    </div>
+                                                                    </div>
+                            </div>
+                                                        
+                    </div>
+                </div>
+                        </div>
+    </div>
+    
+    <div class="panel-group" id="accordion-menu" role="tablist" aria-multiselectable="true">
+          <div class="panel">
+                    <div class="panel-heading" role="tab" id="menu_categoria_2">
+                        <div class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion-menu"  href="#categoria_2" aria-expanded="true" aria-controls="categoria_2">
+                                <i class="fa fa-caret-down"></i>                                CLIENTE                            </a>
+                        </div>
+                    </div>
+                    <div id="categoria_2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="menu_categoria_2">
+
+                        <div class="panel-group" id="accordion-menu_" role="tablist" aria-multiselectable="true">
+
+                                                    <div class="panel">
+                                <div class="panel-heading" role="tab" id="menu_grupo_5">
+                                    <div class="panel-title">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion-menu_"  href="#grupo_5" aria-expanded="true" aria-controls="grupo_5">
+                                            <i class="fa fa-caret-down"></i>                                            Editar  cadastro                                        </a>
+                                    </div>
+                                </div>
+                                <div id="grupo_5" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="menu_grupo_5">
+                                                                    <div class="panel-item active" id_categoria="2" id_grupo="5" id_documentacao="Editar cadastro" >
+                                        <a href="">
+                                            <i class="fa fa-caret-right"></i>Atualizar dados do cliente                                     </a>
+                                            </div>
+                                                                    </div>
+
+                                <div id="grupo_5" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="menu_grupo_5">
+                                                                    <div class="panel-item active" id_categoria="2" id_grupo="5" id_documentacao="Editar cadastro" >
+
+                                        <a href="">
+                                            <i class="fa fa-caret-right"></i>Cadastrar cliente                                     </a>
+                                  
+                                    </div>
+                                                                    </div>
+                            </div>
+                                                        
+                    </div>
+                </div>
+                        </div>
+    </div>
+    <div class="panel-group" id="accordion-menu" role="tablist" aria-multiselectable="true">
+          <div class="panel">
+                    <div class="panel-heading" role="tab" id="menu_categoria_3">
+                        <div class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion-menu"  href="#categoria_3" aria-expanded="true" aria-controls="categoria_3">
+                                <i class="fa fa-caret-down"></i>                                FUNCIONÁRIO                            </a>
+                        </div>
+                    </div>
+                    <div id="categoria_3" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="menu_categoria_3">
+
+                        <div class="panel-group" id="accordion-menu_" role="tablist" aria-multiselectable="true">
+
+                                                    <div class="panel">
+                                <div class="panel-heading" role="tab" id="menu_grupo_6">
+                                    <div class="panel-title">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion-menu_"  href="#grupo_6" aria-expanded="true" aria-controls="grupo_6">
+                                            <i class="fa fa-caret-down"></i>                                            Editar cadastro funcionário                                       </a>
+                                    </div>
+                                </div>
+                                <div id="grupo_6" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="menu_grupo_6">
+                                                                    <div class="panel-item active" id_categoria="3" id_grupo="6" id_documentacao="Editar cadastro funcionário" >
+                                        <a href="">
+                                            <i class="fa fa-caret-right"></i>Cadastrar funcionário                                    </a>
+                                            </div>
+                                </div>
+
+                                <div id="grupo_6" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="menu_grupo_6">
+                                                                    <div class="panel-item active" id_categoria="3" id_grupo="6" id_documentacao="Editar cadastro funcionário" >
+                                        <a href="">
+                                            <i class="fa fa-caret-right"></i>Atualizar dados do funcionário                                    </a>
+                                  
+                                    </div>
+                                                                    </div>
+                            </div>
+                                                        
+                    </div>
+                </div>
+                        </div>
+    </div>
+          <!-- <form class="needs-validation" novalidate>
+            
             <div class="row">
               <div class="col-md-6 mb-3">
                 <label for="primeiroNome">Nome completo do cliente</label>
@@ -127,41 +240,6 @@
             
             <hr class="mb-4">
             <button class="btn btn-primary btn-lg btn-block" type="submit">Finalizar</button>
-          </form>
+          </form> -->
         </div>
       </div>
-
-    
-
-    <!-- Principal JavaScript do Bootstrap
-    ================================================== -->
-    <!-- Foi colocado no final para a página carregar mais rápido -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-    <script src="../../assets/js/vendor/popper.min.js"></script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
-    <script src="../../assets/js/vendor/holder.min.js"></script>
-    <script>
-      // Exemplo de JavaScript para desativar o envio do formulário, se tiver algum campo inválido.
-      (function() {
-        'use strict';
-
-        window.addEventListener('load', function() {
-          // Selecione todos os campos que nós queremos aplicar estilos Bootstrap de validação customizados.
-          var forms = document.getElementsByClassName('needs-validation');
-
-          // Faz um loop neles e previne envio
-          var validation = Array.prototype.filter.call(forms, function(form) {
-            form.addEventListener('submit', function(event) {
-              if (form.checkValidity() === false) {
-                event.preventDefault();
-                event.stopPropagation();
-              }
-              form.classList.add('was-validated');
-            }, false);
-          });
-        }, false);
-      })();
-    </script>
-  </body>
-</html>
