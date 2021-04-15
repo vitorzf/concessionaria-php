@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.4
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 13-Abr-2021 às 02:03
--- Versão do servidor: 10.1.37-MariaDB
--- versão do PHP: 7.2.33
+-- Tempo de geração: 16-Abr-2021 às 00:52
+-- Versão do servidor: 10.4.17-MariaDB
+-- versão do PHP: 7.3.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `concessionaria`
+-- Banco de dados: `projetoconcessionaria`
 --
 
 -- --------------------------------------------------------
@@ -34,7 +33,7 @@ CREATE TABLE `carro` (
   `modelo` varchar(20) NOT NULL,
   `valor` float NOT NULL,
   `cor` varchar(50) NOT NULL,
-  `estoque` int(11) NOT NULL DEFAULT '0'
+  `estoque` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -62,7 +61,7 @@ CREATE TABLE `dados_cliente` (
   `RG` int(10) NOT NULL,
   `CPF` int(20) NOT NULL,
   `endereco` varchar(240) NOT NULL,
-  `data_registro` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `data_registro` timestamp NOT NULL DEFAULT current_timestamp(),
   `data_alteracao` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -74,11 +73,18 @@ CREATE TABLE `dados_cliente` (
 
 CREATE TABLE `dados_funcionario` (
   `id` int(11) NOT NULL,
-  `nome` int(11) NOT NULL,
-  `CPF` int(11) NOT NULL,
-  `RG` int(11) NOT NULL,
-  `telefone` int(10) NOT NULL
+  `nome` varchar(240) NOT NULL,
+  `CPF` int(20) NOT NULL,
+  `RG` int(20) NOT NULL,
+  `telefone` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `dados_funcionario`
+--
+
+INSERT INTO `dados_funcionario` (`id`, `nome`, `CPF`, `RG`, `telefone`) VALUES
+(3, 'Cayque', 78963245, 546210217, '40028922');
 
 -- --------------------------------------------------------
 
@@ -90,8 +96,15 @@ CREATE TABLE `funcionario` (
   `id` int(10) NOT NULL,
   `id_dados_funcionario` int(10) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `senha` varchar(10) NOT NULL
+  `senha` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `funcionario`
+--
+
+INSERT INTO `funcionario` (`id`, `id_dados_funcionario`, `email`, `senha`) VALUES
+(1, 3, 'cayque.142@gmail.com', '202cb962ac59075b964b07152d234b70');
 
 -- --------------------------------------------------------
 
@@ -129,7 +142,7 @@ CREATE TABLE `movimentacao_estoque` (
   `quantidade` int(10) NOT NULL,
   `carro_id` int(10) NOT NULL,
   `gerente_id` int(10) NOT NULL,
-  `data` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `data` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -151,55 +164,55 @@ CREATE TABLE `vendas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Indexes for dumped tables
+-- Índices para tabelas despejadas
 --
 
 --
--- Indexes for table `carro`
+-- Índices para tabela `carro`
 --
 ALTER TABLE `carro`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `cliente`
+-- Índices para tabela `cliente`
 --
 ALTER TABLE `cliente`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_idregistro_cliente` (`id_dados_cliente`);
 
 --
--- Indexes for table `dados_cliente`
+-- Índices para tabela `dados_cliente`
 --
 ALTER TABLE `dados_cliente`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `dados_funcionario`
+-- Índices para tabela `dados_funcionario`
 --
 ALTER TABLE `dados_funcionario`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `funcionario`
+-- Índices para tabela `funcionario`
 --
 ALTER TABLE `funcionario`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_id_cadastrofunc` (`id_dados_funcionario`);
 
 --
--- Indexes for table `gerente`
+-- Índices para tabela `gerente`
 --
 ALTER TABLE `gerente`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `metodo_pagamento`
+-- Índices para tabela `metodo_pagamento`
 --
 ALTER TABLE `metodo_pagamento`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `movimentacao_estoque`
+-- Índices para tabela `movimentacao_estoque`
 --
 ALTER TABLE `movimentacao_estoque`
   ADD PRIMARY KEY (`id`),
@@ -207,75 +220,76 @@ ALTER TABLE `movimentacao_estoque`
   ADD KEY `fk_idgerente_adic` (`gerente_id`);
 
 --
--- Indexes for table `vendas`
+-- Índices para tabela `vendas`
 --
 ALTER TABLE `vendas`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_idcliente_venda` (`cliente_id`),
   ADD KEY `fk_idgerente_venda` (`gerente_id`),
   ADD KEY `fk_idcarro_venda` (`carro_id`),
-  ADD KEY `fk_idfunc_venda` (`funcionario_id`);
+  ADD KEY `fk_idfunc_venda` (`funcionario_id`),
+  ADD KEY `fk_idformapag_venda` (`id_forma_pagto`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT de tabelas despejadas
 --
 
 --
--- AUTO_INCREMENT for table `carro`
+-- AUTO_INCREMENT de tabela `carro`
 --
 ALTER TABLE `carro`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `cliente`
+-- AUTO_INCREMENT de tabela `cliente`
 --
 ALTER TABLE `cliente`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `dados_cliente`
+-- AUTO_INCREMENT de tabela `dados_cliente`
 --
 ALTER TABLE `dados_cliente`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `dados_funcionario`
+-- AUTO_INCREMENT de tabela `dados_funcionario`
 --
 ALTER TABLE `dados_funcionario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `funcionario`
+-- AUTO_INCREMENT de tabela `funcionario`
 --
 ALTER TABLE `funcionario`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `gerente`
+-- AUTO_INCREMENT de tabela `gerente`
 --
 ALTER TABLE `gerente`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id gerado por gerente cadastrado no sistema';
 
 --
--- AUTO_INCREMENT for table `metodo_pagamento`
+-- AUTO_INCREMENT de tabela `metodo_pagamento`
 --
 ALTER TABLE `metodo_pagamento`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `movimentacao_estoque`
+-- AUTO_INCREMENT de tabela `movimentacao_estoque`
 --
 ALTER TABLE `movimentacao_estoque`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `vendas`
+-- AUTO_INCREMENT de tabela `vendas`
 --
 ALTER TABLE `vendas`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for dumped tables
+-- Restrições para despejos de tabelas
 --
 
 --
@@ -303,6 +317,7 @@ ALTER TABLE `movimentacao_estoque`
 ALTER TABLE `vendas`
   ADD CONSTRAINT `fk_idcarro_venda` FOREIGN KEY (`carro_id`) REFERENCES `carro` (`id`),
   ADD CONSTRAINT `fk_idcliente_venda` FOREIGN KEY (`cliente_id`) REFERENCES `cliente` (`id`),
+  ADD CONSTRAINT `fk_idformapag_venda` FOREIGN KEY (`id_forma_pagto`) REFERENCES `metodo_pagamento` (`id`),
   ADD CONSTRAINT `fk_idfunc_venda` FOREIGN KEY (`funcionario_id`) REFERENCES `funcionario` (`id`),
   ADD CONSTRAINT `fk_idgerente_venda` FOREIGN KEY (`gerente_id`) REFERENCES `gerente` (`id`);
 COMMIT;
