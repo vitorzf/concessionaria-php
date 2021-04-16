@@ -1,6 +1,16 @@
+<?php
+
+$nome = $funcoes->nomeLogin();
+if (!empty($nome)) {
+
+    $GLOBALS['session']->setSession("nome", $nome);
+}
+
+?>
+
 <div class="wrapper">
     <header>
-        <nav>
+        <nav class="black">
             <div class="menu-icon">
                 <i class="fa fa-bars fa-2x"></i>
             </div>
@@ -12,9 +22,10 @@
                     <li><a href="<?= $conf->base_url() ?>">Home</a></li>
                     <?php
                     if (!$session->logado()) {
-                        echo "<li><a href=\"javascript:modalLogin()\">Login/Cadastro</a></li>";
+                        echo "<li><a href=\"javascript:modalLogin()\">Login colaborador</a></li>";
                     } else {
-                        echo "<li><a href=\"{$conf->base_url("dashboard")}\">Painel</a></li>
+                        echo "<li><a href=\"javascript:void()\">Bem-vindo(a) {$nome}</a></li>
+                              <li><a href=\"{$conf->base_url("dashboard")}\">Painel</a></li>
                               <li><a href=\"javascript:logoff()\">Sair</a></li>";
                     }
                     ?>
@@ -24,21 +35,21 @@
     </header>
 </div>
 
-<div class="modal" tabindex="-1" id="modalLoginCadastro">
+<div class="modal" tabindex="-1" id="modalLogin">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="tituloModalLoginCadastro">Login de colaboradores</h5>
+                <h5 class="modal-title">Login de colaboradores</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div class="container-fluid" id="divLogin">
+                <div class="container-fluid">
                     <div class="row">
                         <div class="col-xs-10 col-sm-10 col-md-8 col-lg-8 offset-xs-1 offset-sm-1 offset-md-2 offset-lg-2">
                             <div class="form-group">
-                                <label for="txtUsuarioEmail">Usuário ou Email</label>
+                                <label for="txtUsuarioEmail">Email</label>
                                 <input class="form-control" type="text" id="txtUsuarioEmail">
                             </div>
                             <div class="form-group">
@@ -62,6 +73,8 @@
     var model_usuarios = '<?= $conf->base_url(); ?>request/model/usuarios';
 
     $(document).ready(function() {
+
+        atualizarLogin();
 
         $('#txtUsuarioEmail').keypress(function(e) {
             if (e.which == 13) {
@@ -91,8 +104,14 @@
                 emailuser,
                 senha
             }, function(data) {
+
                 if (data.erro) {
-                    alert("Erro ao realizar login!");
+                    if (typeof data.msg !== 'undefined') {
+                        alert(data.msg);
+                    } else {
+                        alert("Erro ao realizar login!");
+
+                    }
                     return;
                 } else {
                     location.reload();
@@ -102,21 +121,19 @@
         })
     });
 
+    function atualizarLogin() {
+        $.post(`${model_usuarios}/atualizarLogin`, {}, function() {})
+    }
+
     function limparCampos() {
         $('#txtUsuarioEmail').val("");
         $('#txtUsuarioSenha').val("");
-        $('#txtUsuarioCadastro').val("");
-        $('#txtEmailCadastro').val("");
-        $('#txtSenhaCadastro').val("");
-        $('#txtSenhaRepCadastro').val("");
     }
 
     function modalLogin() {
         limparCampos();
-        $('#tituloModalLoginCadastro').html("Login");
-        $('#divCadastro').hide();
         $('#divLogin').show();
-        $('#modalLoginCadastro').modal("show");
+        $('#modalLogin').modal("show");
 
     }
 
@@ -125,5 +142,4 @@
             window.location.replace("<?= $conf->base_url() ?>");
         }, 'json')
     }
-
 </script>

@@ -1,19 +1,3 @@
-
-body {
-      font-family: "Helvetica Neue",sans-serif;
-      font-weight: lighter;
-margin: 0;
-      padding: 0;
-      width: 100%;
-}
-
-header {
-      width: 100%;
-      /* height: 100vh; */
-      /* background: url() no-repeat 50% 50%; */
-      /* background-size: cover; */
-}
-
 .content {
       width: 94%;
       margin: 4em auto;
@@ -32,6 +16,22 @@ header {
       font-size: 20px;
       letter-spacing: 2px;
 }
+
+body {
+      font-family: "Helvetica Neue",sans-serif;
+      font-weight: lighter;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+}
+
+header {
+      width: 100%;
+      /* height: 100vh; */
+      /* background: url() no-repeat 50% 50%; */
+      /* background-size: cover; */
+}
+
 
 nav {
       position: fixed;

@@ -10,7 +10,7 @@
             $exp = explode("index.php", $url);
 
             $url_atual = $exp[0];
-            $this->base_url = $url_atual;
+            $this->base_url = rtrim($url_atual, "/");
         }
 
         public function base_url($params = null){
@@ -21,6 +21,7 @@
             $url_atual = $exp[0];
 
             if (mb_strpos($url_atual, $this->base_url) !== false) {
+                
                 return "{$this->base_url}/{$params}";
             } else {
                 throw new Exception("Error: Base url no arquivo index.php incorreta", 1);

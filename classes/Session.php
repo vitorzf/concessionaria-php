@@ -39,8 +39,16 @@
             if(empty($campo)){
                 return $_SESSION;
             }
-                
-            return $_SESSION[$campo];
+
+            if(isset($_SESSION[$campo]) && $_SESSION[$campo] == "0"){
+                return false;
+            }
+
+            if(!empty($_SESSION[$campo])){
+                return $_SESSION[$campo];
+            }else{
+                return null;
+            }
         }
 
         public function logado(){

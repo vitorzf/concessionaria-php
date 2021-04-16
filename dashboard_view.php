@@ -1,245 +1,516 @@
 <?php
-   if (!$session->logado()){
-      echo "É necessário estar logado para acessar esta área.";
-      exit;
-   }  
+if (!$session->logado()) {
+
+  $url = $GLOBALS['config']->base_url();
+
+  echo '<script type="text/javascript">';
+  echo 'window.location.href="' . $url . '";';
+  echo '</script>';
+  echo '<noscript>';
+  echo '<meta http-equiv="refresh" content="0;url=' . $url . '" />';
+  echo '</noscript>';
+  exit;
+}
 ?>
 
+<style>
+  .titulo-panel {
+    /* background-color: #012f85; */
+    background-color: black;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    border-bottom: 2px solid #012f85;
+    transition-duration: 0.2s;
 
-    <div class="container">
-      <div class="py-3 text-center">
-        <h2>Bem vindo ao painel inicial!</h2>
+  }
+
+  .flecha {
+    float: right;
+    padding-top: 6px;
+
+  }
+
+  .ativo {
+    background-color: #012f85;
+    transition-duration: 0.2s;
+  }
+
+  .opcoes-panel {
+    border-right: 2px solid #012f85;
+  }
+
+  .opcao {
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 0px;
+  }
+
+  .opcao:hover {
+    background-color: #7392cc;
+    color: #ffffff;
+  }
+
+  .pad-5 {
+    padding-top: 5px;
+  }
+
+  .naoMostra {
+    display: none;
+  }
+
+  .mostra {
+    display: block;
+  }
+
+  a {
+    text-decoration: none !important;
+  }
+</style>
+
+<div class="container-fluid" style="padding-left:0px; margin-top:-10px;">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+      <div class="titulo-panel">
+        Carros
+        <i class="fa fa-chevron-right flecha"></i>
       </div>
+      <div class="opcoes-panel" style="display:none;">
+        <p class="opcao">Listagem de Carros</p>
+        <p class="opcao">Listagem de Carros</p>
+        <p class="opcao">Listagem de Carros</p>
+        <p class="opcao">Listagem de Carros</p>
+      </div>
+      <div class="titulo-panel">
+        Clientes
+        <i class="fa fa-chevron-right flecha"></i>
+      </div>
+      <div class="opcoes-panel" style="display:none;">
+        <p class="opcao">Listagem de Carros</p>
+        <p class="opcao">Listagem de Carros</p>
+        <p class="opcao">Listagem de Carros</p>
+        <p class="opcao">Listagem de Carros</p>
+      </div>
+      <div class="titulo-panel">
+        Funcionários
+        <i class="fa fa-chevron-right flecha"></i>
+      </div>
+      <div class="opcoes-panel" style="display:none;">
+        <p class="opcao" id="mostra-lista-funcionarios">Listagem de Funcionários</p>
+      </div>
+      <div class="titulo-panel">
+        Vendas
+        <i class="fa fa-chevron-right flecha"></i>
+      </div>
+      <div class="opcoes-panel" style="display:none;">
+        <p class="opcao">Listagem de Carros</p>
+        <p class="opcao">Listagem de Carros</p>
+        <p class="opcao">Listagem de Carros</p>
+        <p class="opcao">Listagem de Carros</p>
+      </div>
+    </div>
+    <div class="col-xs-11 col-sm-11 col-md-9 col-lg-9 offset-xs-1 offset-sm-1 offset-md-0 offset-lg-0 telas">
+      <div id="bem-vindo" class="text-center pad-5">
+        <h4>Bem-vindo ao Dashboard da Concessionária topzera</h4>
+        <p>Selecione ao lado a operação que deseja realizar.</p>
+      </div>
+      <!-- A partir daqui começa as telas separadas -->
 
-      <div class="py-3 text-center">
-          <h4 class="mb-3">O que você deseja realizar?</h4>
+      <!-- Carros -->
+
+      <!-- Clientes -->
+
+      <!-- Funcionarios -->
+
+      <div id="lista-funcionarios" class="naoMostra pad-5">
+        <div class="row">
+          <div class="container-fluid tools">
+            <div class="row">
+              <div class="col-xs-12 col-sm-12 col-md-3 col-lg-5">
+                <div class="form-group">
+                  <label></label>
+                  <input type="text" id="txtBuscaFuncionario" class="form-control" placeholder="Digite a Pesquisa">
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                <div class="form-group">
+                  <label></label>
+                  <select class="form-control" id="cmbTipoPesquisaFuncionario">
+                    <option selected value="default">Sem filtro</option>
+                    <option value="nome">Nome</option>
+                    <option value="cpf">CPF</option>
+                    <option value="rg">RG</option>
+                    <option value="telefone">Telefone</option>
+                  </select>
+                </div>
+              </div>
+              <?php
+              if ($GLOBALS['funcoes']->usuarioGerente()) {
+              ?>
+                <div class="col-xs-6 col-sm-6 col-md-3 col-lg-2">
+                  <a href="javascript:lista_funcionarios()">
+                    <button class="btn btn-primary btn-block" style="margin-top:24px;">
+                      <i class="fa fa-search"></i>
+                      Buscar
+                    </button>
+                  </a>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-3 col-lg-2">
+                  <a href="javascript:criar_funcionario()">
+                    <button class="btn btn-success btn-block" style="margin-top:24px;">
+                      <i class="fa fa-plus"></i>
+                      Criar
+                    </button>
+                  </a>
+                </div>
+              <?php
+              } else {
+              ?>
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                  <a href="javascript:lista_funcionarios()">
+                    <button class="btn btn-primary btn-block" style="margin-top:24px;">
+                      <i class="fa fa-search"></i>
+                      Buscar
+                    </button>
+                  </a>
+                </div>
+              <?php
+              }
+              ?>
+            </div>
           </div>
+          <table class="table table-hover" id="lista-de-funcionarios">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th class="text-center">CPF</th>
+                <th class="text-center">RG</th>
+                <th class="text-center">Telefone</th>
+                <th class="text-center">Situação</th>
+                <?php
+                if ($GLOBALS['funcoes']->usuarioGerente()) {
+                  echo "<th class=\"text-center\">Opções</th>";
+                }
+                ?>
+              </tr>
+            </thead>
+            <tbody>
 
-          <div class="l-estilo l-estilo1 l-antes"></div>
-
-          <div class="container-fluid container-conteudo">
-              <div class="row">
-          <div class="col-md-3">
-
-          <div class="panel-group" id="accordion-menu" role="tablist" aria-multiselectable="true">
-          <div class="panel">
-                    <div class="panel-heading" role="tab" id="menu_categoria_1">
-                        <div class="panel-title">
-                            <a role="button" data-toggle="collapse" data-parent="#accordion-menu"  href="#categoria_1" aria-expanded="true" aria-controls="categoria_1">
-                                <i class="fa fa-caret-down"></i>                                ESTOQUE                            </a>
-                        </div>
-                    </div>
-                    <div id="categoria_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="menu_categoria_1">
-
-                        <div class="panel-group" id="accordion-menu_" role="tablist" aria-multiselectable="true">
-
-                                                    <div class="panel">
-                                <div class="panel-heading" role="tab" id="menu_grupo_4">
-                                    <div class="panel-title">
-                                        <a role="button" data-toggle="collapse" data-parent="#accordion-menu_"  href="#grupo_4" aria-expanded="true" aria-controls="grupo_4">
-                                            <i class="fa fa-caret-down"></i>                                            Editar estoque                                        </a>
-                                    </div>
-                                </div>
-                                <div id="grupo_4" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="menu_grupo_4">
-                                                                    <div class="panel-item active" id_categoria="1" id_grupo="4" id_documentacao="privacidade" >
-                                        <a href="">
-                                            <i class="fa fa-caret-right"></i>Cadastrar carro                                     </a>
-                                  
-                                    </div>
-                                                                    </div>
-
-                                <div id="grupo_4" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="menu_grupo_4">
-                                                                    <div class="panel-item active" id_categoria="1" id_grupo="4" id_documentacao="privacidade" >
-                                        <a href="">
-                                            <i class="fa fa-caret-right"></i>Atualizar informações do carro                                      </a>
-                                  
-                                    </div>
-                                                                    </div>
-                            </div>
-                                                        
-                    </div>
-                </div>
-                        </div>
-    </div>
-    
-    <div class="panel-group" id="accordion-menu" role="tablist" aria-multiselectable="true">
-          <div class="panel">
-                    <div class="panel-heading" role="tab" id="menu_categoria_2">
-                        <div class="panel-title">
-                            <a role="button" data-toggle="collapse" data-parent="#accordion-menu"  href="#categoria_2" aria-expanded="true" aria-controls="categoria_2">
-                                <i class="fa fa-caret-down"></i>                                CLIENTE                            </a>
-                        </div>
-                    </div>
-                    <div id="categoria_2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="menu_categoria_2">
-
-                        <div class="panel-group" id="accordion-menu_" role="tablist" aria-multiselectable="true">
-
-                                                    <div class="panel">
-                                <div class="panel-heading" role="tab" id="menu_grupo_5">
-                                    <div class="panel-title">
-                                        <a role="button" data-toggle="collapse" data-parent="#accordion-menu_"  href="#grupo_5" aria-expanded="true" aria-controls="grupo_5">
-                                            <i class="fa fa-caret-down"></i>                                            Editar  cadastro                                        </a>
-                                    </div>
-                                </div>
-                                <div id="grupo_5" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="menu_grupo_5">
-                                                                    <div class="panel-item active" id_categoria="2" id_grupo="5" id_documentacao="Editar cadastro" >
-                                        <a href="">
-                                            <i class="fa fa-caret-right"></i>Atualizar dados do cliente                                     </a>
-                                            </div>
-                                                                    </div>
-
-                                <div id="grupo_5" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="menu_grupo_5">
-                                                                    <div class="panel-item active" id_categoria="2" id_grupo="5" id_documentacao="Editar cadastro" >
-
-                                        <a href="">
-                                            <i class="fa fa-caret-right"></i>Cadastrar cliente                                     </a>
-                                  
-                                    </div>
-                                                                    </div>
-                            </div>
-                                                        
-                    </div>
-                </div>
-                        </div>
-    </div>
-    <div class="panel-group" id="accordion-menu" role="tablist" aria-multiselectable="true">
-          <div class="panel">
-                    <div class="panel-heading" role="tab" id="menu_categoria_3">
-                        <div class="panel-title">
-                            <a role="button" data-toggle="collapse" data-parent="#accordion-menu"  href="#categoria_3" aria-expanded="true" aria-controls="categoria_3">
-                                <i class="fa fa-caret-down"></i>                                FUNCIONÁRIO                            </a>
-                        </div>
-                    </div>
-                    <div id="categoria_3" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="menu_categoria_3">
-
-                        <div class="panel-group" id="accordion-menu_" role="tablist" aria-multiselectable="true">
-
-                                                    <div class="panel">
-                                <div class="panel-heading" role="tab" id="menu_grupo_6">
-                                    <div class="panel-title">
-                                        <a role="button" data-toggle="collapse" data-parent="#accordion-menu_"  href="#grupo_6" aria-expanded="true" aria-controls="grupo_6">
-                                            <i class="fa fa-caret-down"></i>                                            Editar cadastro funcionário                                       </a>
-                                    </div>
-                                </div>
-                                <div id="grupo_6" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="menu_grupo_6">
-                                                                    <div class="panel-item active" id_categoria="3" id_grupo="6" id_documentacao="Editar cadastro funcionário" >
-                                        <a href="">
-                                            <i class="fa fa-caret-right"></i>Cadastrar funcionário                                    </a>
-                                            </div>
-                                </div>
-
-                                <div id="grupo_6" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="menu_grupo_6">
-                                                                    <div class="panel-item active" id_categoria="3" id_grupo="6" id_documentacao="Editar cadastro funcionário" >
-                                        <a href="">
-                                            <i class="fa fa-caret-right"></i>Atualizar dados do funcionário                                    </a>
-                                  
-                                    </div>
-                                                                    </div>
-                            </div>
-                                                        
-                    </div>
-                </div>
-                        </div>
-    </div>
-          <!-- <form class="needs-validation" novalidate>
-            
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label for="primeiroNome">Nome completo do cliente</label>
-                <input type="text" class="form-control" id="primeiroNome" placeholder="" value="" required>
-                <div class="invalid-feedback">
-                  É obrigatório inserir um nome válido.
-                </div>
-              </div>
-              <div class="col-md-6 mb-3">
-                <label>CPF</label>
-                <input type="text" class="form-control" placeholder="" value="" required>
-                <div class="invalid-feedback">
-                  É obrigatório inserir um CPF válido.
-                  <div class="mb-3">
-              <label>CNH</label>
-              <input type="text" class="form-control"  placeholder="">
-            </div>
-                </div>
-              </div>
-            </div>
-            
-
-            <div class="mb-3">
-              <label for="email">Email <span class="text-muted">(Opcional)</span></label>
-              <input type="email" class="form-control" id="email" placeholder="fulano@exemplo.com">
-              <div class="invalid-feedback">
-                Por favor, insira um endereço de e-mail válido, para atualizações de entrega.
-              </div>
-            </div>
-
-            <div class="mb-3">
-              <label for="endereco">Endereço</label>
-              <input type="text" class="form-control" id="endereco" placeholder="Rua..., nº 0" required>
-            </div>
-            <div class="row">
-              <div class="col-md-5 mb-3">
-                <label for="pais">País</label>
-                <select class="custom-select d-block w-100" id="pais" required>
-                  <option value="">Escolha...</option>
-                  <option>Brasil</option>
-                </select>
-                <div class="invalid-feedback">
-                  Por favor, escolha um país válido.
-                </div>
-              </div>
-              <div class="col-md-4 mb-3">
-                <label for="estado">Estado</label>
-                <select class="custom-select d-block w-100" id="estado" required>
-                  <option value="">Escolha...</option>
-                  <option>Acre (AC)
-                          Alagoas (AL)
-                          Amapá (AP)
-                          Amazonas (AM)
-                          Bahia (BA)
-                          Ceará (CE)
-                          Distrito Federal (DF)
-                          Espírito Santo (ES)
-                          Goiás (GO)
-                          Maranhão (MA)
-                          Mato Grosso (MT)
-                          Mato Grosso do Sul (MS)
-                          Minas Gerais (MG)
-                          Pará (PA)
-                          Paraíba (PB)
-                          Paraná (PR)
-                          Pernambuco (PE)
-                          Piauí (PI)
-                          Rio de Janeiro (RJ)
-                          Rio Grande do Norte (RN)
-                          Rio Grande do Sul (RS)
-                          Rondônia (RO)
-                          Roraima (RR)
-                          Santa Catarina (SC)
-                          São Paulo (SP)
-                          Sergipe (SE)
-                          Tocantins (TO)</option>
-                </select>
-                <div class="invalid-feedback">
-                  Por favor, insira um estado válido.
-                </div>
-              </div>
-              <div class="col-md-3 mb-3">
-                <label for="cep">CEP</label>
-                <input type="text" class="form-control" id="cep" placeholder="" required>
-                <div class="invalid-feedback">
-                  É obrigatório inserir um CEP.
-                </div>
-              </div>
-            </div>
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="salvar-info">
-              <label class="custom-control-label" for="salvar-info">Lembrar desta informação, na próxima vez.</label>
-            </div>
-            <hr class="mb-4">
-            
-            <hr class="mb-4">
-            <button class="btn btn-primary btn-lg btn-block" type="submit">Finalizar</button>
-          </form> -->
+            </tbody>
+          </table>
         </div>
       </div>
+
+      <!-- Vendas -->
+
+    </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" id="modalFuncionario">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="tituloModalFuncionario"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
+            <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+              <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                  <div class="form-group">
+                    <label for="txtNomeFuncionario">Nome</label>
+                    <input class="form-control" type="text" id="txtNomeFuncionario">
+                  </div>
+                  <div class="form-group">
+                    <label for="txtTelefone">Telefone</label>
+                    <input class="form-control" type="text" id="txtTelefone">
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                  <div class="form-group">
+                    <label for="txtCPFFuncionario">CPF</label>
+                    <input class="form-control" type="text" id="txtCPFFuncionario">
+                  </div>
+                  <div class="form-group">
+                    <label for="txtRGFuncionario">RG</label>
+                    <input class="form-control" type="text" id="txtRGFuncionario">
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                  <div class="form-group">
+                    <label for="txtEmailFuncionario">Email</label>
+                    <input class="form-control" type="email" id="txtEmailFuncionario">
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                  <div class="form-group">
+                    <label for="txtSenhaFuncionario">Senha</label>
+                    <input class="form-control" type="password" id="txtSenhaFuncionario">
+                  </div>
+                </div>
+                <?php if ($GLOBALS['funcoes']->usuarioGerente()) {
+
+                ?>
+                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="form-group">
+                      <label for="cmbTipoUsuario">Tipo usuário</label>
+                      <select class="form-control" id="cmbTipoUsuario">
+                        <option selected value="vendedor">Vendedor</option>
+                        <option value="gerente">Gerente</option>
+                      </select>
+                    </div>
+                  </div>
+                <?php
+                }
+                ?>
+              </div>
+            </div>
+            <div class="text-center" style="width:100%;">
+              <button id="btnModalFuncionario" class="btn btn-success" data-loading-text="Aguarde...">
+                Criar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var model_funcionarios = '<?= $conf->base_url(); ?>request/model/funcionarios';
+  $(document).ready(function() {
+
+    numerar();
+    lista_funcionarios();
+
+    $('.opcoes-panel').click(function(e) {
+      e.preventDefault();
+    });
+
+    $('.opcao').click(function() {
+      var id = "#" + $(this).attr('id').slice(7);
+      $('#bem-vindo').hide();
+      $('.telas').find(".mostra").each(function() {
+        $(this).removeClass("mostra").addClass("naoMostra");
+      });
+
+      $(id).show();
+
+    });
+
+    $('#btnModalFuncionario').click(function() {
+      var nome = $('#txtNomeFuncionario').val();
+      var telefone = $('#txtTelefone').val();
+      var cpf = $('#txtCPFFuncionario').val();
+      var rg = $('#txtRGFuncionario').val();
+      var email = $('#txtEmailFuncionario').val();
+      var senha = $('#txtSenhaFuncionario').val();
+      var tipo_usuario = $('#cmbTipoUsuario').val();
+
+      if (nome.length < 2) {
+        alert("O nome digitado é muito curto");
+        return;
+      }
+      if (telefone.length < 10) {
+        alert("O telefone digitado esta incorreto");
+        return;
+      }
+      if (cpf.length != 11) {
+        alert("O CPF foi digitado incorretamente, somente números");
+        return;
+      }
+
+      if (rg.length < 7) {
+        alert("RG digitado incorretamente");
+        return;
+      }
+      if (nome.email == 0) {
+        alert("Email não digitado");
+        return;
+      }
+      if (senha.email == 0) {
+        alert("Senha não digitada");
+        return;
+      }
+
+      $.post(`${model_funcionarios}/cadastrar_funcionario`, {
+        nome,
+        telefone,
+        cpf,
+        rg,
+        email,
+        senha,
+        tipo_usuario
+      }, function(data) {
+
+        if (data.erro) {
+          if (typeof data.msg !== 'undefined') {
+            alert(data.msg);
+          } else {
+            alert("Erro ao cadastrar funcionario!");
+          }
+          return;
+        } else {
+
+          alert("Funcionário cadastrado com sucesso!");
+          $('#modalFuncionario').modal('hide');
+
+          limpar_campos_funcionario();
+          $('#cmbTipoPesquisaFuncionario').val("default");
+          $('#txtBuscaFuncionario').val("");
+          lista_funcionarios();
+
+        }
+
+      }, 'json')
+
+    })
+
+    $('.titulo-panel').click(function() {
+
+      var opcao = ".opcao-" + $(this).attr("titulo");
+
+      if ($(this).hasClass("ativo")) {
+        $(this).find('.fa-chevron-down').each(function() {
+          $(this).removeClass('fa-chevron-down').addClass("fa-chevron-right");
+        });
+
+        $(this).removeClass("ativo");
+        $(opcao).fadeOut();
+
+      } else {
+
+        $(this).find('.fa-chevron-right').each(function() {
+          $(this).removeClass('fa-chevron-right').addClass("fa-chevron-down");
+        });
+
+        $(this).addClass("ativo");
+
+        $(opcao).fadeIn();
+      }
+    });
+
+  });
+
+  function alterarStatusConta(status, id) {
+    $.post(`${model_funcionarios}/alterar_status_conta`, {
+      status,
+      id
+    }, function(data) {
+
+      if (data.erro) {
+        if (typeof data.msg !== 'undefined') {
+          alert(data.msg);
+        } else {
+          alert("Erro ao desativar conta!");
+        }
+        return;
+      } else {
+
+        lista_funcionarios();
+
+      }
+
+    }, 'json')
+  }
+
+  function alterarTipoConta(id, tipo) {
+    $.post(`${model_funcionarios}/alterar_tipo_conta`, {
+      id,
+      tipo
+    }, function(data) {
+
+      if (data.erro) {
+        if (typeof data.msg !== 'undefined') {
+          alert(data.msg);
+        } else {
+          alert("Erro ao alterar tipo de conta!");
+        }
+        return;
+      } else {
+
+        lista_funcionarios();
+
+      }
+
+    }, 'json')
+  }
+
+  function numerar() {
+    var cnt = 1;
+    $('.titulo-panel').each(function() {
+      $(this).attr("titulo", cnt);
+      cnt++;
+    });
+
+    cnt = 1
+
+    $(".opcoes-panel").each(function() {
+      $(this).addClass("opcao-" + cnt);
+      cnt++;
+    });
+  }
+
+  function criar_funcionario() {
+    $('#tituloModalFuncionario').html("Cadastrar Funcionário");
+    $('#modalFuncionario').modal("show");
+  }
+
+  function limpar_campos_funcionario() {
+    $('#txtNomeFuncionario').val("");
+    $('#txtTelefone').val("");
+    $('#txtCPFFuncionario').val("");
+    $('#txtRGFuncionario').val("");
+    $('#txtEmailFuncionario').val("");
+    $('#txtSenhaFuncionario').val("");
+    $('#cmbTipoUsuario').val("vendedor");
+  }
+
+  function lista_funcionarios() {
+
+    var tipo = $('#cmbTipoPesquisaFuncionario').val();
+    var pesquisa = $('#txtBuscaFuncionario').val();
+    var filtro = [];
+
+    if (tipo != null) {
+      if (tipo != "default") {
+        if (pesquisa.length == 0) {
+          alert("Pesquisa não digitada!");
+          return;
+        }
+
+        filtro.push({
+          'tipo': tipo,
+          'pesquisa': pesquisa
+        });
+
+      }
+    }
+
+    $.post(`${model_funcionarios}/lista_funcionarios`, {
+      filtro
+    }, function(data) {
+
+      if (data.erro) {
+        if (typeof data.msg !== 'undefined') {
+          alert(data.msg);
+        } else {
+          alert("Erro ao listar funcionarios!");
+        }
+        return;
+      } else {
+
+        $('#lista-de-funcionarios > tbody').html(data.html);
+
+      }
+
+    }, 'json')
+  }
+</script>

@@ -6,9 +6,12 @@ foreach (glob("./classes/*.php") as $nome_arquivo) {
 
 $conf = new Config();
 $session = new Session();
+$funcoes = new Funcoes();
 
 $GLOBALS['database'] = new Database();
 $GLOBALS['session'] = $session;
+$GLOBALS['funcoes'] = $funcoes;
+$GLOBALS['config'] = $conf;
 
 $path = "http://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 $str = str_replace("http://", "", $conf->base_url());
@@ -64,7 +67,7 @@ if (empty($nome_pagina)) {
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- <link rel="stylesheet" type="text/css" href="<?= $conf->base_url("assets/style.css") ?>"> -->
+    <link rel="stylesheet" type="text/css" href="<?= $conf->base_url("assets/style.css") ?>">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -113,6 +116,7 @@ if (empty($nome_pagina)) {
             position: fixed;
             width: 100%;
             line-height: 60px;
+            z-index:1000;
         }
 
         nav ul {
@@ -199,7 +203,7 @@ if (empty($nome_pagina)) {
     require 'cabecalho.php';
     ?>
 
-    <div class="container-fluid" style="padding-top:100px;">
+    <div style="padding-top:100px;">
         <?php
         require "{$arquivo}_view.php";
         ?>
@@ -207,20 +211,11 @@ if (empty($nome_pagina)) {
 
     <script>
         $(document).ready(function() {
-            $('nav').addClass('black');
 
             $(".menu-icon").on("click", function() {
                 $("nav ul").toggleClass("showing");
             });
         });
-
-        $(window).on("scroll", function() {
-            if ($(window).scrollTop()) {
-                $('nav').addClass('black');
-            } else {
-                $('nav').removeClass('black');
-            }
-        })
     </script>
 </body>
 
