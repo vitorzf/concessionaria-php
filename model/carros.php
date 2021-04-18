@@ -263,7 +263,6 @@ function lista_carros()
                                 <td class=\"text-center\">{$resultado->modelo}</td>
                                 <td class=\"text-center\">{$resultado->tipo_carro}</td>
                                 <td class=\"text-center\">{$resultado->cor}</td>
-                                <td style=\"display:none\" class=\"text-center\">{$resultado->placa}</td>
                                 <td class=\"text-center\">{$resultado->estoque}</td>
                                 {$botao}
                             </tr>";
