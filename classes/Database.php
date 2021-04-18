@@ -77,6 +77,45 @@
             }
         }
 
+        public function delete($tabela = null, $where = null){
+            if (empty($tabela)) {
+                throw new Exception("Erro: Tabela não especificada", 1);
+                exit();
+            }
+
+            $condition = "";
+
+            if (!empty($where)) {
+
+                $condition = "";
+
+                foreach ($where as $key => $value) {
+
+                    if (!empty($condition)) {
+                        $condition .= " AND ";
+                    }
+                    $condition .= "{$key} = {$value}";
+                }
+
+                $condition = "WHERE {$condition}";
+            }
+
+            $sql = "DELETE FROM {$tabela} {$condition}";
+
+            if ($this->db->query($sql) === TRUE) {
+
+                return true;
+            } else {
+                if ($this->debug) {
+                    $err = mysqli_error($this->db);
+                    throw new Exception("Erro: {$err}", 1);
+                } else {
+                    return false;
+                }
+            }
+
+        }
+
         public function update($tabela = null, $campos = null, $where = null){
             if (empty($tabela)) {
                 throw new Exception("Erro: Tabela não especificada", 1);
@@ -96,9 +135,11 @@
             $set = "";
 
             foreach($campos as $key => $value){
-                $set .= " {$key} = {$value}";
+                $set .= " {$key} = '{$value}',";
             }
 
+            $set = rtrim($set, ",");
+        
             $condition = "";
 
             if(!empty($where)){
@@ -110,7 +151,7 @@
                     if(!empty($condition)){
                         $condition .= " AND ";
                     }
-                    $condition .= "{$key} = {$value}";
+                    $condition .= "{$key}='{$value}'";
                 }
 
                 $condition = "WHERE {$condition}";
@@ -122,12 +163,12 @@
 
                 return true;
             } else {
-                if ($this->debug) {
+                // if ($this->debug) {
                     $err = mysqli_error($this->db);
                     throw new Exception("Erro: {$err}", 1);
-                } else {
-                    return false;
-                }
+                // } else {
+                //     return false;
+                // }
             }
 
         }

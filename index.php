@@ -116,7 +116,7 @@ if (empty($nome_pagina)) {
             position: fixed;
             width: 100%;
             line-height: 60px;
-            z-index:1000;
+            z-index: 1000;
         }
 
         nav ul {
@@ -199,16 +199,21 @@ if (empty($nome_pagina)) {
 
         }
     </style>
+    <div id="tudo">
     <?php
-    require 'cabecalho.php';
+        require 'cabecalho.php';
     ?>
 
-    <div style="padding-top:100px;">
-        <?php
-        require "{$arquivo}_view.php";
-        ?>
+        <div id="conteudo" style="padding-top:100px;">
+            <?php
+            require "{$arquivo}_view.php";
+            ?>
+        </div>
     </div>
-
+    <?php
+        require 'rodape.php';
+    ?>
+    
     <script>
         $(document).ready(function() {
 

@@ -8,14 +8,46 @@ if (!empty($nome)) {
 
 ?>
 
+<style>
+    .logo {
+        text-decoration: none !important;
+        color: white;
+        font-size: 20px;
+        text-align: center;
+        transition-duration: 0.5s;
+    }
+
+    .logo:hover {
+        color: white;
+        font-size: 26px;
+        margin-left: 36px;
+        transition-duration: 0.5s;
+        -webkit-animation: glow 1s ease-in-out infinite alternate;
+        -moz-animation: glow 1s ease-in-out infinite alternate;
+        animation: glow 1s ease-in-out infinite alternate;
+    }
+
+    @-webkit-keyframes glow {
+        from {
+            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+        }
+
+        to {
+            text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+        }
+    }
+</style>
+
 <div class="wrapper">
     <header>
         <nav class="black">
             <div class="menu-icon">
                 <i class="fa fa-bars fa-2x"></i>
             </div>
-            <div class="logo">
-                Concessionária
+            <div>
+                <a class="logo" href="<?= $GLOBALS['config']->base_url(); ?>">
+                    <i>VIVC</i>
+                </a>
             </div>
             <div class="menu">
                 <ul>
@@ -24,7 +56,11 @@ if (!empty($nome)) {
                     if (!$session->logado()) {
                         echo "<li><a href=\"javascript:modalLogin()\">Login colaborador</a></li>";
                     } else {
-                        echo "<li><a href=\"javascript:void()\">Bem-vindo(a) {$nome}</a></li>
+
+                        $exp = explode(" ", $nome);
+
+
+                        echo "<li><a href=\"javascript:void()\">Bem-vindo(a) {$exp[0]}</a></li>
                               <li><a href=\"{$conf->base_url("dashboard")}\">Painel</a></li>
                               <li><a href=\"javascript:logoff()\">Sair</a></li>";
                     }
