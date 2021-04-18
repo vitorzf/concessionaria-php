@@ -163,12 +163,12 @@
 
                 return true;
             } else {
-                // if ($this->debug) {
+                if ($this->debug) {
                     $err = mysqli_error($this->db);
                     throw new Exception("Erro: {$err}", 1);
-                // } else {
-                //     return false;
-                // }
+                } else {
+                    return false;
+                }
             }
 
         }
