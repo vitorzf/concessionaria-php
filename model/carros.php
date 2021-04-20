@@ -201,7 +201,9 @@ function lista_carros()
         $params = post('filtro');
         $params = (object) $params[0];
 
-        $filtro = "WHERE c.{$params->tipo} = '{$params->pesquisa}'";
+        $pesquisa = strtolower($params->pesquisa);
+
+        $filtro = "WHERE lower(c.{$params->tipo}) like '%{$pesquisa}%'";
     }
     
     $tipo = post("tipo_carro");
@@ -213,8 +215,8 @@ function lista_carros()
             $filtro = " WHERE c.tipo_id = '{$tipo}' ";
         }
     }
-
-    if (empty($filtro)) {
+    
+    if (!empty($filtro)) {
         $filtro .= " AND c.visivel = 1 ";
     } else {
         $filtro = " WHERE c.visivel = 1 ";

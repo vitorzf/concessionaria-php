@@ -282,7 +282,88 @@ if (!$session->logado()) {
 
       <!-- Clientes -->
       <div id="lista-clientes" class="naoMostra pad-5">
-        lista clients
+        <div class="row">
+          <div class="container-fluid tools">
+            <div class="row">
+              <div class="col-xs-12 col-sm-12 col-md-3 col-lg-5">
+                <div class="form-group">
+                  <label></label>
+                  <input type="text" id="txtBuscaCliente" class="form-control" placeholder="Digite a Pesquisa">
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                <div class="form-group">
+                  <label></label>
+                  <select class="form-control" id="cmbTipoPesquisaCliente">
+                    <option selected value="default">Sem filtro</option>
+                    <option value="nome">Nome</option>
+                    <option value="email">Email</option>
+                    <option value="cpf">CPF</option>
+                    <option value="rg">RG</option>
+                    <option value="telefone">Telefone</option>
+                    <option value="rua">Rua</option>
+                    <option value="bairro">Bairro</option>
+                    <option value="cidade">Cidade</option>
+                    <option value="estado">Estado</option>
+                  </select>
+                </div>
+              </div>
+              <?php
+              if ($GLOBALS['funcoes']->usuarioGerente()) {
+              ?>
+                <div class="col-xs-6 col-sm-6 col-md-3 col-lg-2">
+                  <a href="javascript:lista_clientes()">
+                    <button class="btn btn-primary btn-block" style="margin-top:24px;">
+                      <i class="fa fa-search"></i>
+                      Buscar
+                    </button>
+                  </a>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-3 col-lg-2">
+                  <a href="javascript:criar_cliente()">
+                    <button class="btn btn-success btn-block" style="margin-top:24px;">
+                      <i class="fa fa-plus"></i>
+                      Criar
+                    </button>
+                  </a>
+                </div>
+              <?php
+              } else {
+              ?>
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                  <a href="javascript:lista_clientes()">
+                    <button class="btn btn-primary btn-block" style="margin-top:24px;">
+                      <i class="fa fa-search"></i>
+                      Buscar
+                    </button>
+                  </a>
+                </div>
+              <?php
+              }
+              ?>
+            </div>
+          </div>
+          <table class="table table-hover" id="lista-de-clientes">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th class="text-center">Email</th>
+                <th class="text-center">CPF</th>
+                <th class="text-center">RG</th>
+                <th class="text-center">Telefone</th>
+                <th class="text-center">Endereço</th>
+                <?php
+                if ($GLOBALS['funcoes']->usuarioGerente()) {
+                  echo "<th class=\"text-center\">Opções</th>";
+                }
+                ?>
+              </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <!-- Funcionarios -->
@@ -396,6 +477,29 @@ if (!$session->logado()) {
               <button id="btnModalTipoCarro" class="btn btn-success" data-loading-text="Aguarde...">
                 Criar
               </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" id="modalEndereco">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Endereço</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
+            <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10" id="enderecoCliente">
+
             </div>
           </div>
         </div>
@@ -589,20 +693,159 @@ if (!$session->logado()) {
   </div>
 </div>
 
+<div class="modal" tabindex="-1" id="modalCliente">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="tituloModalCliente"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+              <div class="form-group">
+                <input class="form-control" type="hidden" id="idCliente">
+                <label for="txtNomeCliente">Nome</label>
+                <input class="form-control" type="text" id="txtNomeCliente">
+              </div>
+              <div class="form-group">
+                <label for="txtEmailCliente">Email</label>
+                <input class="form-control" type="email" id="txtEmailCliente">
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                  <div class="form-group">
+                    <label for="txtRGCliente">RG</label>
+                    <input class="form-control" type="text" id="txtRGCliente">
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                  <div class="form-group">
+                    <label for="txtCPFCliente">CPF</label>
+                    <input class="form-control" type="text" id="txtCPFCliente">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="txtTelefoneCliente">Telefone</label>
+                <input class="form-control" type="text" id="txtTelefoneCliente">
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+              <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
+                  <div class="form-group">
+                    <label for="txtCidadeCliente">Cidade</label>
+                    <input class="form-control" type="text" id="txtCidadeCliente">
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
+                  <div class="form-group">
+                    <label for="cmbEstadoCliente">Estado</label>
+                    <div class="form-group">
+                      <select id="cmbEstadoCliente" class="form-control">
+                        <option value="default" selected>Estado</option>
+                        <option value="AC">Acre</option>
+                        <option value="AL">Alagoas</option>
+                        <option value="AP">Amapá</option>
+                        <option value="AM">Amazonas</option>
+                        <option value="BA">Bahia</option>
+                        <option value="CE">Ceará</option>
+                        <option value="DF">Distrito Federal</option>
+                        <option value="ES">Espírito Santo</option>
+                        <option value="GO">Goiás</option>
+                        <option value="MA">Maranhão</option>
+                        <option value="MT">Mato Grosso</option>
+                        <option value="MS">Mato Grosso do Sul</option>
+                        <option value="MG">Minas Gerais</option>
+                        <option value="PA">Pará</option>
+                        <option value="PB">Paraíba</option>
+                        <option value="PR">Paraná</option>
+                        <option value="PE">Pernambuco</option>
+                        <option value="PI">Piauí</option>
+                        <option value="RJ">Rio de Janeiro</option>
+                        <option value="RN">Rio Grande do Norte</option>
+                        <option value="RS">Rio Grande do Sul</option>
+                        <option value="RO">Rondônia</option>
+                        <option value="RR">Roraima</option>
+                        <option value="SC">Santa Catarina</option>
+                        <option value="SP">São Paulo</option>
+                        <option value="SE">Sergipe</option>
+                        <option value="TO">Tocantins</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-8">
+                  <div class="form-group">
+                    <label for="txtRuaCliente">Rua</label>
+                    <input class="form-control" type="text" id="txtRuaCliente">
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                  <div class="form-group">
+                    <label for="txtNumeroCliente">Numero</label>
+                    <input class="form-control" type="text" id="txtNumeroCliente">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="txtBairroCliente">Bairro</label>
+                <input class="form-control" type="email" id="txtBairroCliente">
+              </div>
+              <div class="form-group">
+                <label for="txtCEPCliente">CEP</label>
+                <input class="form-control" type="email" id="txtCEPCliente">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="text-center" style="width:100%;">
+          <button id="btnModalCliente" class="btn btn-success" data-loading-text="Aguarde...">
+            Criar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   var model_funcionarios = '<?= $conf->base_url(); ?>request/model/funcionarios';
   var model_carros = '<?= $conf->base_url(); ?>request/model/carros';
+  var model_clientes = '<?= $conf->base_url(); ?>request/model/clientes';
   $(document).ready(function() {
 
     numerar();
     lista_carros();
     lista_tipos_carros();
     lista_funcionarios();
+    lista_clientes();
 
     filtro_tipo_carros();
 
     $('.opcoes-panel').click(function(e) {
       e.preventDefault();
+    });
+
+    $(document).on("click", '.btn-endereco', function() {
+
+      var estado = $(this).attr("estado");
+      var cidade = $(this).attr("cidade");
+      var bairro = $(this).attr("bairro");
+      var rua = $(this).attr("rua");
+      var numero = $(this).attr("numero");
+      var cep = $(this).attr("cep");
+
+      var texto = `<strong>Cidade:</strong> ${cidade} - ${estado} <br><strong>Bairro:</strong> ${bairro} <br><strong>Rua:</strong> ${rua} <strong>N° </strong>${numero} - <strong><br>CEP:</strong> ${cep}`;
+
+      $('#enderecoCliente').html(texto);
+      $('#modalEndereco').modal('show');
     });
 
     $('.opcao').click(function() {
@@ -661,11 +904,138 @@ if (!$session->logado()) {
 
     });
 
+    $('#btnModalCliente').click(function() {
+
+      var id = $('#idCliente').val();
+      var nome = $('#txtNomeCliente').val();
+      var email = $('#txtEmailCliente').val();
+      var rg = $('#txtRGCliente').val();
+      var cpf = $('#txtCPFCliente').val();
+      var telefone = $('#txtTelefoneCliente').val();
+
+      var rua = $('#txtRuaCliente').val();
+      var numero = $('#txtNumeroCliente').val();
+      var cidade = $('#txtCidadeCliente').val();
+      var estado = $('#cmbEstadoCliente').val();
+      var bairro = $('#txtBairroCliente').val();
+      var cep = $('#txtCEPCliente').val();
+
+      if (nome.length == 0) {
+        alert("Nome do cliente vazio");
+        return;
+      }
+
+      if (cidade.length == 0) {
+        alert("Cidade do cliente vazia");
+        return;
+      }
+
+      if (email.length == 0) {
+        alert("Email do cliente vazio");
+        return;
+      }
+
+      if (rg.length == 0) {
+        alert("RG vazio");
+        return;
+      }
+
+      if (cpf.length == 0) {
+        alert("CPF vazio");
+        return;
+      }
+
+      if (rua.length == 0) {
+        alert("Rua do cliente vazia");
+        return;
+      }
+
+      if (estado == "default") {
+        alert("Estado do cliente não selecionado");
+        return;
+      }
+      if (numero.length == 0) {
+        alert("Numero do cliente vazio");
+        return;
+      }
+      if (bairro.length == 0) {
+        alert("Bairro do cliente vazio");
+        return;
+      }
+      if (cep.length == 0) {
+        alert("Cep do cliente vazio");
+        return;
+      }
+
+      var url = "";
+
+      if (id.length == 0) {
+        url = `${model_clientes}/criar_cliente`;
+      } else {
+        url = `${model_clientes}/alterar_cliente`;
+      }
+
+      $.post(url, {
+        id,
+        nome,
+        email,
+        rg,
+        cpf,
+        telefone,
+        estado,
+        cidade,
+        rua,
+        numero,
+        bairro,
+        cep
+      }, function(data) {
+
+        if (data.erro) {
+          if (typeof data.msg !== 'undefined') {
+            alert(data.msg);
+          } else {
+            if (id.length == 0) {
+              alert("Erro ao cadastrar Cliente!");
+              return;
+            } else {
+              alert("Erro ao editar Cliente!");
+              return;
+            }
+
+          }
+          return;
+        } else {
+
+          if (id.length == 0) {
+            alert("Cliente cadastrado com sucesso!");
+          } else {
+            alert("Cliente editado com sucesso!");
+          }
+
+          $('#idCliente').val("");
+          $('#txtNomeCliente').val("");
+          $('#txtEmailCliente').val("");
+          $('#txtRGCliente').val("");
+          $('#txtCPFCliente').val("");
+          $('#txtTelefoneCliente').val("");
+          $('#cmbEstadoCliente').val("default");
+          $('#txtCidadeCliente').val("");
+          $('#txtRuaCliente').val("");
+          $('#txtNumeroCliente').val("");
+          $('#txtBairroCliente').val("");
+          $('#txtCEPCliente').val("");
+          $('#modalCliente').modal("hide");
+          lista_clientes();
+        }
+
+      }, 'json')
+
+    });
+
     $('#btnModalCarro').click(function() {
 
       var id = $('#idCarro').val();
       var nome = $('#txtNomeCarro').val();
-      var placa = $('#txtPlacaCarro').val();
       var modelo = $('#txtModeloCarro').val();
       var marca = $('#txtMarcaCarro').val();
       var cor = $('#txtCorCarro').val();
@@ -677,10 +1047,7 @@ if (!$session->logado()) {
         alert("Nome do veículo vazio");
         return;
       }
-      if (placa.length > 7) {
-        alert("Placa digitada incorretamente, digite sem o hífen");
-        return;
-      }
+
       if (modelo.length == 0) {
         alert("Modelo do veículo vazio");
         return;
@@ -732,7 +1099,6 @@ if (!$session->logado()) {
       $.post(`${model_carros}/criar_alterar_carro`, {
         id,
         nome,
-        placa,
         modelo,
         marca,
         cor,
@@ -760,10 +1126,8 @@ if (!$session->logado()) {
 
           if (id.length == 0) {
             alert("Carro cadastrado com sucesso!");
-            return;
           } else {
             alert("Carro editado com sucesso!");
-            return;
           }
 
           $('#idCarro').val("");
@@ -990,6 +1354,11 @@ if (!$session->logado()) {
     $('#modalCarro').modal("show");
   }
 
+  function criar_cliente() {
+    $('#tituloModalCliente').html("Cadastrar cliente");
+    $('#modalCliente').modal("show");
+  }
+
   function criar_funcionario() {
     $('#tituloModalFuncionario').html("Cadastrar Funcionário");
     $('#modalFuncionario').modal("show");
@@ -1147,6 +1516,45 @@ if (!$session->logado()) {
     }, 'json')
   }
 
+  function alterar_cliente(id) {
+
+    $.post(`${model_clientes}/buscar_dados_cliente`, {
+      id
+    }, function(data) {
+
+      if (data.erro) {
+        if (typeof data.msg !== 'undefined') {
+          alert(data.msg);
+        } else {
+          alert("Erro ao buscar dados do carro!");
+        }
+        return;
+      } else {
+
+        var dados = data.dados;
+
+        $('#idCliente').val(dados.id);
+        $('#txtNomeCliente').val(dados.nome);
+        $('#txtEmailCliente').val(dados.email);
+        $('#cmbEstadoCliente').val(dados.estado);
+        $('#txtRGCliente').val(dados.rg);
+        $('#txtCPFCliente').val(dados.cpf);
+        $('#txtTelefoneCliente').val(dados.telefone);
+        $('#txtCidadeCliente').val(dados.cidade);
+        $('#txtRuaCliente').val(dados.rua);
+        $('#txtNumeroCliente').val(dados.numero);
+        $('#txtBairroCliente').val(dados.bairro);
+        $('#txtCEPCliente').val(dados.cep);
+
+        $('#tituloModalCliente').html("Alterar tipo de Carro");
+        $('#btnModalCliente').html("Alterar");
+        $('#modalCliente').modal("show");
+
+      }
+
+    }, 'json')
+  }
+
   function excluir_carro(id) {
     if (!confirm("Deseja deletar o carro?")) {
       return;
@@ -1174,10 +1582,14 @@ if (!$session->logado()) {
 
   function lista_carros() {
 
-    var tipo = $('#cmbTipoPesquisaFuncionario').val();
-    var pesquisa = $('#cmbTipoPesquisaCarro').val();
+    var tipo = $('#cmbTipoPesquisaCarro').val();
+    var pesquisa = $('#txtBuscaCarro').val();
     var tipo_carro = $('#cmbFiltroTipoCarro').val();
     var filtro = [];
+
+    if (tipo_carro == "default") {
+      tipo_carro = null;
+    }
 
     if (tipo != null) {
       if (tipo != "default") {
@@ -1209,6 +1621,46 @@ if (!$session->logado()) {
       } else {
 
         $('#lista-de-carros > tbody').html(data.html);
+
+      }
+
+    }, 'json')
+  }
+
+  function lista_clientes() {
+
+    var tipo = $('#cmbTipoPesquisaCliente').val();
+    var pesquisa = $('#txtBuscaCliente').val();
+    var filtro = [];
+
+    if (tipo != null) {
+      if (tipo != "default") {
+        if (pesquisa.length == 0) {
+          alert("Pesquisa não digitada!");
+          return;
+        }
+
+        filtro.push({
+          'tipo': tipo,
+          'pesquisa': pesquisa
+        });
+      }
+    }
+
+    $.post(`${model_clientes}/lista_clientes`, {
+      filtro
+    }, function(data) {
+
+      if (data.erro) {
+        if (typeof data.msg !== 'undefined') {
+          alert(data.msg);
+        } else {
+          alert("Erro ao listar clientes!");
+        }
+        return;
+      } else {
+
+        $('#lista-de-clientes > tbody').html(data.html);
 
       }
 
