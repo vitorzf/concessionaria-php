@@ -31,7 +31,9 @@
     <div class="row">
         <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
             <p>Vitor Hugo Zafra Pereira - RM: 1895220</p>
-            <p>Cayque</p>
+            <p>Cayque Guilherme de Alvarenga Carmo - RM: 1876385</p>
+            <p> Ivo Manoel Moreira - RM: 1898995</p>
+            <p>Vinícius Barbosa de Melo - RM: 1886098</p>
         </div>
         <div class="col-xs-0 col-sm-0 col-md-3 col-lg-3">
 
