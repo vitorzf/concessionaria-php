@@ -70,6 +70,15 @@ if (!$session->logado()) {
   a {
     text-decoration: none !important;
   }
+
+  .venda-cancelada {
+    background-color: #ce1616;
+    color: white;
+  }
+
+  .venda-cancelada td a {
+    color: #c494f9;
+  }
 </style>
 
 <div class="container-fluid" style="padding-left:0px; margin-top:-10px;">
@@ -102,14 +111,15 @@ if (!$session->logado()) {
         <i class="fa fa-chevron-right flecha"></i>
       </div>
       <div class="opcoes-panel" style="display:none;">
-        <p class="opcao">Histórico de Vendas</p>
+        <p class="opcao" id="mostra-historico-vendas">Histórico de Vendas</p>
       </div>
       <div class="titulo-panel">
-        Opções
+        Opções da sua conta
         <i class="fa fa-chevron-right flecha"></i>
       </div>
       <div class="opcoes-panel" style="display:none;">
         <p class="opcao" id="mostra-mudar-senha">Mudar senha</p>
+        <p class="opcao" id="mostra-mudar-info">Mudar Informações</p>
       </div>
     </div>
     <div class="col-xs-11 col-sm-11 col-md-9 col-lg-9 offset-xs-1 offset-sm-1 offset-md-0 offset-lg-0 telas">
@@ -201,7 +211,7 @@ if (!$session->logado()) {
                 <th class="text-center">Modelo</th>
                 <th class="text-center">Tipo</th>
                 <th class="text-center">Cor</th>
-                <!-- <th class="text-center">Placa</th> -->
+                <th class="text-center">Preço</th>
                 <th class="text-center">Estoque</th>
                 <?php
                 if ($GLOBALS['funcoes']->usuarioGerente()) {
@@ -449,9 +459,150 @@ if (!$session->logado()) {
 
       <!-- Vendas -->
 
+      <div id="historico-vendas" class="naoMostra pad-5">
+        <div class="row">
+          <div class="container-fluid tools">
+            <div class="row">
+              <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                <div class="form-group">
+                  <label>Pesquisa</label>
+                  <input type="text" id="txtBuscaVenda" class="form-control" placeholder="Digite a Pesquisa">
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-12 col-md-4 col-lg-2">
+                <div class="form-group">
+                  <label>Tipo de Filtro</label>
+                  <select class="form-control" id="cmbTipoPesquisaVenda">
+                    <option selected value="default">Sem filtro</option>
+                    <option value="cliente">Nome Cliente</option>
+                    <option value="carro">Nome Carro</option>
+                    <option value="funcionario">Nome Funcionário</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-12 col-md-4 col-lg-2">
+                <div class="form-group">
+                  <label>Status</label>
+                  <select class="form-control" id="cmbPesquisaStatusVenda">
+                    <option selected value="default">Sem filtro</option>
+                    <option value="normal">Venda Realizada</option>
+                    <option value="cancelada">Venda Cancelada</option>
+                  </select>
+                </div>
+              </div>
+              <?php
+              if ($GLOBALS['funcoes']->usuarioGerente()) {
+              ?>
+                <div class="col-xs-6 col-sm-6 col-md-12 col-lg-2">
+                  <a href="javascript:lista_vendas()">
+                    <button class="btn btn-primary btn-block" style="margin-top:32px;">
+                      <i class="fa fa-search"></i>
+                      Buscar
+                    </button>
+                  </a>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-12 col-lg-2">
+                  <a href="javascript:criar_venda()">
+                    <button class="btn btn-success btn-block" style="margin-top:32px;">
+                      <i class="fa fa-plus"></i>
+                      Criar
+                    </button>
+                  </a>
+                </div>
+              <?php
+              } else {
+              ?>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+                  <a href="javascript:lista_vendas()">
+                    <button class="btn btn-primary btn-block" style="margin-top:32px;">
+                      <i class="fa fa-search"></i>
+                      Buscar
+                    </button>
+                  </a>
+                </div>
+              <?php
+              }
+              ?>
+            </div>
+          </div>
+          <table class="table table-hover" id="lista-de-vendas">
+            <thead>
+              <tr>
+                <th>Carro</th>
+                <th class="text-center">Cliente</th>
+                <th class="text-center">Vendedor</th>
+                <th class="text-center">Valor</th>
+                <th class="text-center">Detalhes da venda</th>
+                <?php
+                if ($GLOBALS['funcoes']->usuarioGerente()) {
+                  echo "<th class=\"text-center\">Opções</th>";
+                }
+                ?>
+              </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="mudar-senha" class="naoMostra pad-5">
+        <div class="form-group">
+          <label>Senha Atual</label>
+          <input type="password" id="txtSenhaAtual" class="form-control" placeholder="Senha Atual">
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            <div class="form-group">
+              <label>Nova senha</label>
+              <input type="password" id="txtNovaSenha1" class="form-control" placeholder="Senha">
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            <div class="form-group">
+              <label>Repita a nova senha</label>
+              <input type="password" id="txtNovaSenha2" class="form-control" placeholder="Senha">
+            </div>
+          </div>
+        </div>
+        <div class="text-center">
+          <button id="btnAlterarSenha" class="btn btn-success">Alterar Senha</button>
+        </div>
+      </div>
+
+      <div id="mudar-info" class="naoMostra pad-5">
+        <div class="form-group">
+          <label>Nome</label>
+          <input type="text" id="txtNomeInfo" class="form-control" placeholder="Nome">
+        </div>
+        <div class="form-group">
+          <label>Telefone</label>
+          <input type="text" id="txtTelefoneInfo" class="form-control" placeholder="Telefone">
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            <div class="form-group">
+              <label>RG</label>
+              <input type="text" id="txtRGInfo" class="form-control" placeholder="RG">
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            <div class="form-group">
+              <label>CPF</label>
+              <input type="text" id="txtCPFInfo" class="form-control" placeholder="CPF">
+            </div>
+          </div>
+        </div>
+        <div class="text-center">
+          <button id="btnAlterarInfo" class="btn btn-success">Salvar Alterações</button>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
+
 
 <div class="modal" tabindex="-1" id="modalTipoCarro">
   <div class="modal-dialog modal-lg">
@@ -485,8 +636,46 @@ if (!$session->logado()) {
   </div>
 </div>
 
+<style>
+  .titulo-detalhes {
+    padding-left: 15px;
+    font-size: 20px;
+    color: #4b68d2;
+    text-decoration: overline;
+  }
+
+  .font-bold {
+    font-weight: bold !important;
+  }
+
+  .modal-dialog {
+    overflow-y: initial !important
+  }
+
+  .modal-body {
+    height: 80vh;
+    overflow-y: auto;
+  }
+</style>
+
+<div class="modal" tabindex="-1" id="modalDetalhesPedido">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Detalhes da venda</h5>
+        <button type="button" id="fecharModalDetalhesPedido" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="divDetalhesPedido"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal" tabindex="-1" id="modalEndereco">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-xs">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Endereço</h5>
@@ -494,7 +683,7 @@ if (!$session->logado()) {
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="height:auto;">
         <div class="container-fluid">
           <div class="row">
             <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
@@ -568,7 +757,7 @@ if (!$session->logado()) {
                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
                   <div class="form-group">
                     <label for="txtValorCarro">Valor</label>
-                    <input class="form-control" type="text" id="txtValorCarro">
+                    <input class="form-control" data-prefix="R$ " data-thousands="." data-decimal="," type="text" id="txtValorCarro">
                   </div>
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
@@ -815,10 +1004,86 @@ if (!$session->logado()) {
   </div>
 </div>
 
+<div class="modal" tabindex="-1" id="modalVenda">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="tituloModalVenda"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+              <div class="form-group">
+                <label for="cmbFuncionarioVenda">Funcionario que realizou a Venda</label>
+                <select class="form-control" id="cmbFuncionarioVenda">
+                </select>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+              <div class="form-group">
+                <label for="cmbClienteVenda">Cliente</label>
+                <select class="form-control" id="cmbClienteVenda">
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="cmbCarroVenda">Carro vendido</label>
+            <select class="form-control" id="cmbCarroVenda">
+            </select>
+          </div>
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+              <div class="form-group">
+                <label for="txtValorVenda">Valor da Venda</label>
+                <input class="form-control" type="text" id="txtValorVenda" disabled>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+              <div class="form-group">
+                <label for="txtQuantidadeVenda">Quantidade</label>
+                <input class="form-control" type="number" id="txtQuantidadeVenda" value="0">
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+              <div class="form-group">
+                <label for="cmbFormaPagtoVenda">Forma de Pagamento</label>
+                <select class="form-control" id="cmbFormaPagtoVenda">
+                  <option value="default">Escolha</option>
+                  <option value="avista">à Vista</option>
+                  <option value="credito">Cartão de Crédito</option>
+                  <option value="debito">Cartão de Débito</option>
+                  <option value="boleto">Boleto Bancário</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="txtComentarioVenda">Observações sobre a venda</label>
+            <textarea id="txtComentarioVenda" style="resize:none; width:100%; height: 100px;"></textarea>
+          </div>
+        </div>
+        <div class="text-center" style="width:100%;">
+          <button id="btnModalVenda" class="btn btn-success" data-loading-text="Aguarde...">
+            Criar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   var model_funcionarios = '<?= $conf->base_url(); ?>request/model/funcionarios';
   var model_carros = '<?= $conf->base_url(); ?>request/model/carros';
   var model_clientes = '<?= $conf->base_url(); ?>request/model/clientes';
+  var model_vendas = '<?= $conf->base_url(); ?>request/model/vendas';
+  var model_usuarios = '<?= $conf->base_url(); ?>request/model/usuarios';
+
   $(document).ready(function() {
 
     numerar();
@@ -826,12 +1091,32 @@ if (!$session->logado()) {
     lista_tipos_carros();
     lista_funcionarios();
     lista_clientes();
+    lista_vendas();
 
     filtro_tipo_carros();
+
+    buscar_info_funcionario();
+
+    $('#txtValorCarro').maskMoney();
+    $('#txtValorVenda').maskMoney();
 
     $('.opcoes-panel').click(function(e) {
       e.preventDefault();
     });
+
+    $(document).on("change", "#cmbCarroVenda", function() {
+
+      var selecionado = $(this).val();
+
+      if (selecionado == 'default') {
+        $('#txtValorVenda').val("").attr('disabled', true);
+        return;
+      }
+      var preco = $('option:selected', this).attr('preco');
+
+      $('#txtValorVenda').val(preco).attr('disabled', false).focus().blur();
+
+    })
 
     $(document).on("click", '.btn-endereco', function() {
 
@@ -1032,6 +1317,122 @@ if (!$session->logado()) {
 
     });
 
+    $('#btnModalVenda').click(function() {
+
+      var vendedor = $("#cmbFuncionarioVenda").val();
+      var cliente = $("#cmbClienteVenda").val();
+      var carro = $("#cmbCarroVenda").val();
+      var valor = $("#txtValorVenda").maskMoney("unmasked")[0];
+      var qtde = $("#txtQuantidadeVenda").val();
+      var obs = $("#txtComentarioVenda").val();
+
+      qtde = parseInt(qtde);
+      var forma_pagto = $("#cmbFormaPagtoVenda").val();
+
+      if (vendedor == "default") {
+        alert("Vendedor não selecionado!");
+        return;
+      }
+
+      if (cliente == "default") {
+        alert("Cliente não selecionado!");
+        return;
+      }
+
+      if (carro == "default") {
+        alert("Carro não selecionado!");
+        return;
+      }
+
+      if (valor <= 0) {
+        alert("Valor de venda não permitido!");
+        return;
+      }
+
+      if (qtde <= 0) {
+        alert("Quantidade de venda não é valida!");
+        return;
+      }
+
+      if (forma_pagto == "default") {
+        alert("Forma de pagamento não selecionada!");
+        return;
+      }
+
+      $.post(`${model_vendas}/salvar_venda`, {
+        vendedor,
+        cliente,
+        carro,
+        valor,
+        qtde,
+        forma_pagto,
+        obs
+      }, function(data) {
+
+        if (data.erro) {
+          if (typeof data.msg !== 'undefined') {
+            alert(data.msg);
+          } else {
+            alert("Erro ao salvar venda!");
+
+          }
+          return;
+        } else {
+
+          alert("Venda realizada com sucesso!")
+
+          $("#cmbFuncionarioVenda").val("default");
+          $("#cmbClienteVenda").val("default");
+          $("#cmbCarroVenda").val("default");
+          $("#txtValorVenda").val("").attr('disabled', true);
+          $("#txtQuantidadeVenda").val("0");
+          $("#cmbFormaPagtoVenda").val("default");
+          $("#txtComentarioVenda").val("");
+
+          $('#modalVenda').modal("hide");
+          lista_vendas();
+        }
+
+      }, 'json')
+
+    });
+
+    $('#btnAlterarSenha').click(function() {
+
+      var senhaAtual = $('#txtSenhaAtual').val();
+      var novaSenha1 = $('#txtNovaSenha1').val();
+      var novaSenha2 = $('#txtNovaSenha2').val();
+
+      if (novaSenha1 != novaSenha2) {
+        alert("As senhas digitadas não são iguais");
+        return;
+      }
+
+      $.post(`${model_usuarios}/alterar_senha`, {
+        senhaAtual,
+        novaSenha1
+      }, function(data) {
+
+        if (data.erro) {
+          if (typeof data.msg !== 'undefined') {
+            alert(data.msg);
+          } else {
+            alert("Erro ao alterar senha!");
+          }
+          return;
+        } else {
+
+          alert("Senha alterada com sucesso!");
+
+          $('#txtSenhaAtual').val("");
+          $('#txtNovaSenha1').val("");
+          $('#txtNovaSenha2').val("");
+
+        }
+
+      }, 'json')
+    })
+
     $('#btnModalCarro').click(function() {
 
       var id = $('#idCarro').val();
@@ -1040,7 +1441,8 @@ if (!$session->logado()) {
       var marca = $('#txtMarcaCarro').val();
       var cor = $('#txtCorCarro').val();
       var tipo = $('#cmbTipoCarro').val();
-      var valor = $('#txtValorCarro').val();
+      var valor = $('#txtValorCarro').maskMoney('unmasked')[0];
+
       var estoque = $('#txtEstoqueCarro').val();
 
       if (nome.length == 0) {
@@ -1145,6 +1547,53 @@ if (!$session->logado()) {
           $('#txtFotoCarro4').val("");
           $('#modalCarro').modal("hide");
           lista_carros();
+        }
+
+      }, 'json')
+
+    });
+
+    $('#btnAlterarInfo').click(function() {
+      var nome = $("#txtNomeInfo").val();
+      var telefone = $("#txtTelefoneInfo").val();
+      var rg = $("#txtRGInfo").val();
+      var cpf = $("#txtCPFInfo").val();
+
+      if (nome.length < 2) {
+        alert("O nome digitado é muito curto");
+        return;
+      }
+      if (telefone.length < 10) {
+        alert("O telefone digitado esta incorreto");
+        return;
+      }
+      if (cpf.length != 11) {
+        alert("O CPF foi digitado incorretamente, somente números");
+        return;
+      }
+
+      if (rg.length < 7) {
+        alert("RG digitado incorretamente");
+        return;
+      }
+      $.post(`${model_usuarios}/alterar_dados_funcionario`, {
+        nome,
+        telefone,
+        cpf,
+        rg
+      }, function(data) {
+
+        if (data.erro) {
+          if (typeof data.msg !== 'undefined') {
+            alert(data.msg);
+          } else {
+            alert("Erro ao alterar seus dados!");
+          }
+          return;
+        } else {
+
+          alert("Dados alterados com sucesso!");  
+
         }
 
       }, 'json')
@@ -1267,6 +1716,170 @@ if (!$session->logado()) {
     }, 'json')
   }
 
+  function cmb_vendedores(set = "") {
+    $.post(`${model_vendas}/lista_vendedores`, {}, function(data) {
+
+      if (data.erro) {
+        if (typeof data.msg !== 'undefined') {
+          alert(data.msg);
+        } else {
+          alert("Erro ao listar vendedores!");
+        }
+        return;
+      } else {
+
+        $('#cmbFuncionarioVenda').html(data.html);
+
+        if (set.length != 0) {
+          $('#cmbFuncionarioVenda').val(set);
+        }
+
+      }
+
+    }, 'json')
+  }
+
+  function cmb_clientes(set = "") {
+    $.post(`${model_vendas}/lista_clientes`, {}, function(data) {
+
+      if (data.erro) {
+        if (typeof data.msg !== 'undefined') {
+          alert(data.msg);
+        } else {
+          alert("Erro ao listar clientes!");
+        }
+        return;
+      } else {
+
+        $('#cmbClienteVenda').html(data.html);
+
+        if (set.length != 0) {
+          $('#cmbClienteVenda').val(set);
+        }
+
+      }
+
+    }, 'json')
+  }
+
+  function cmb_carros(set = "") {
+    $.post(`${model_vendas}/lista_carros`, {}, function(data) {
+
+      if (data.erro) {
+        if (typeof data.msg !== 'undefined') {
+          alert(data.msg);
+        } else {
+          alert("Erro ao listar carros!");
+        }
+        return;
+      } else {
+
+        $('#cmbCarroVenda').html(data.html);
+
+        if (set.length != 0) {
+          $('#cmbCarroVenda').val(set);
+        }
+
+      }
+
+    }, 'json')
+  }
+
+  function alterar_status_venda(id, status) {
+
+    if (confirm("Deseja altera a venda para cancelada?")) {
+      $.post(`${model_vendas}/alterar_status_venda`, {
+        id,
+        status
+      }, function(data) {
+
+        if (data.erro) {
+          if (typeof data.msg !== 'undefined') {
+            alert(data.msg);
+          } else {
+            alert("Erro ao alterar status da venda!");
+          }
+          return;
+        } else {
+
+          alert("Status alterado com sucesso!");
+          lista_vendas();
+
+        }
+
+      }, 'json')
+    }
+  }
+
+  function criar_venda() {
+
+    cmb_vendedores();
+    cmb_clientes();
+    cmb_carros();
+    $("#cmbCarroVenda").val("default");
+    $('#txtValorVenda').val("").attr('disabled', true);
+
+    $('#tituloModalVenda').html("Cadastrar nova Venda");
+    $('#btnModalVenda').html("Finalizar Venda");
+    $('#modalVenda').modal("show");
+  }
+
+  function lista_vendas() {
+    var busca = $('#txtBuscaVenda').val();
+    var tipo = $('#cmbTipoPesquisaVenda').val();
+    var status = $('#cmbPesquisaStatusVenda').val();
+
+    if (busca.length == 0 && tipo != "default") {
+      alert("Termo de busca não digitado");
+      return;
+    }
+
+    $.post(`${model_vendas}/lista_vendas`, {
+      busca,
+      tipo,
+      status
+    }, function(data) {
+
+      if (data.erro) {
+        if (typeof data.msg !== 'undefined') {
+          alert(data.msg);
+        } else {
+          alert("Erro ao alterar listar vendas!");
+        }
+        return;
+      } else {
+
+        $('#lista-de-vendas > tbody').html(data.html);
+
+      }
+
+    }, 'json')
+
+  }
+
+  function mostrar_detalhes_pedido(id) {
+    $.post(`${model_vendas}/detalhes_pedido`, {
+      id
+    }, function(data) {
+
+
+      if (data.erro) {
+        if (typeof data.msg !== 'undefined') {
+          alert(data.msg);
+        } else {
+          alert("Erro ao alterar tipo de conta!");
+        }
+        return;
+      } else {
+
+        $('#divDetalhesPedido').html(data.html);
+
+        $('#modalDetalhesPedido').modal('show');
+      }
+
+    }, 'json')
+  }
+
   function alterarTipoConta(id, tipo) {
     $.post(`${model_funcionarios}/alterar_tipo_conta`, {
       id,
@@ -1307,6 +1920,29 @@ if (!$session->logado()) {
         if (set.length != 0) {
           $('#cmbTipoCarro').val(set);
         }
+
+      }
+
+    }, 'json')
+  }
+
+  function buscar_info_funcionario() {
+    $.post(`${model_usuarios}/buscar_info_funcionario`, {}, function(data) {
+
+      if (data.erro) {
+        if (typeof data.msg !== 'undefined') {
+          alert(data.msg);
+        } else {
+          alert("Erro ao buscar dados do funcionario!");
+        }
+        return;
+      } else {
+
+        $('#txtNomeInfo').val(data.nome);
+        $('#txtTelefoneInfo').val(data.telefone);
+        $('#txtRGInfo').val(data.rg);
+        $('#txtCPFInfo').val(data.cpf);
+        // btnAlterarInfo
 
       }
 
@@ -1510,6 +2146,7 @@ if (!$session->logado()) {
         $('#tituloModalCarro').html("Alterar tipo de Carro");
         $('#btnModalCarro').html("Alterar");
         $('#modalCarro').modal("show");
+        $('#txtValorCarro').focus().blur();
 
       }
 

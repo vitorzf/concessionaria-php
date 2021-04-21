@@ -1,7 +1,5 @@
 <?php
 
-use function PHPSTORM_META\map;
-
 function post($nome = null)
 {
     if (empty($nome)) {
@@ -63,9 +61,9 @@ function criar_cliente(){
     $resultado = $GLOBALS['database']->insert("cliente", $cliente);
 
     if(!$resultado){
-        die(json_encode(['error' => true]));
+        die(json_encode(['erro' => true]));
     }else{
-        echo json_encode(['error' => false]);
+        echo json_encode(['erro' => false]);
     }
 
 }
@@ -194,7 +192,7 @@ function alterar_cliente(){
     $busca_dados_cliente = $GLOBALS['database']->retornaLinha("SELECT * FROM cliente where id = '{$id}'");
 
     if (!$busca_dados_cliente) {
-        die(json_encode(['error' => true, 'msg' => "Erro ao buscar dados do cliente"]));
+        die(json_encode(['erro' => true, 'msg' => "Erro ao buscar dados do cliente"]));
     }
 
     $dados_cliente = [
@@ -202,19 +200,20 @@ function alterar_cliente(){
         "email" => $email,
         "telefone" => $telefone,
         "RG" => $rg,
-        "CPF" => $cpf
+        "CPF" => $cpf,
+        "data_alteracao" => date("Y-m-d H:i:s")
     ];
 
     $result = $GLOBALS['database']->update("dados_cliente", $dados_cliente, ["id" => $busca_dados_cliente->id_dados_cliente]);
 
     if(!$result){
-        die(json_encode(['error' => true]));
+        die(json_encode(['erro' => true]));
     }
 
     $busca_dados_endereco = $GLOBALS['database']->retornaLinha("SELECT endereco_id FROM dados_cliente where id = '{$busca_dados_cliente->id_dados_cliente}'");
 
     if (!$busca_dados_endereco) {
-        die(json_encode(['error' => true, 'msg' => "Erro ao buscar dados de endereço do cliente"]));
+        die(json_encode(['erro' => true, 'msg' => "Erro ao buscar dados de endereço do cliente"]));
     }
 
     $dados_endereco = [
@@ -231,13 +230,13 @@ function alterar_cliente(){
     if (!$result) {
         die(json_encode(['erro' => true, 'msg' => "Erro ao dados do cliente"]));
     }else{
-        echo json_encode(['error' => false]);
+        echo json_encode(['erro' => false]);
     }
 
     // if (!$resultado) {
-    //     die(json_encode(['error' => true]));
+    //     die(json_encode(['erro' => true]));
     // } else {
-    //     echo json_encode(['error' => false]);
+    //     echo json_encode(['erro' => false]);
     // }
 
 }

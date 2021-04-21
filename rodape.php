@@ -14,9 +14,6 @@
         height: 100%;
     }
 
-    #conteudo{
-        padding-bottom:30px;
-    }
 
     .rodape {
         /* position: static; */
@@ -27,6 +24,7 @@
         color: white;
         padding: 15px;
     }
+
 </style>
 
 <div class="rodape">

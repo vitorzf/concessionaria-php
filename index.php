@@ -67,10 +67,11 @@ if (empty($nome_pagina)) {
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="<?= $conf->base_url("assets/style.css") ?>">
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-maskmoney/3.0.2/jquery.maskMoney.min.js"></script>
 
     <title><?= $nome_pagina ?></title>
 </head>
@@ -200,20 +201,20 @@ if (empty($nome_pagina)) {
         }
     </style>
     <div id="tudo">
-    <?php
+        <?php
         require 'cabecalho.php';
-    ?>
+        ?>
 
         <div id="conteudo" style="padding-top:100px;">
             <?php
             require "{$arquivo}_view.php";
             ?>
         </div>
-    </div>
-    <?php
+
+        <?php
         require 'rodape.php';
-    ?>
-    
+        ?>
+    </div>
     <script>
         $(document).ready(function() {
 
