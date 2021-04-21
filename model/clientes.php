@@ -12,6 +12,7 @@ function post($nome = null)
 }
 
 function criar_cliente(){
+
     $nome = post("nome");
     $email = post("email");
     $rg = post("rg");
@@ -176,6 +177,7 @@ function lista_clientes(){
 }
 
 function alterar_cliente(){
+
     $id = post("id");
     $nome = post("nome");
     $email = post("email");

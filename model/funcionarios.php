@@ -28,6 +28,7 @@
 
     function alterar_tipo_conta(){
         $id = post("id");
+
         $cargo = (post("tipo") == "gerente" ? 1 : 0);
 
         $dados = ['gerente' => $cargo];
