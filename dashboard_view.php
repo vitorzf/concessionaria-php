@@ -1592,7 +1592,7 @@ if (!$session->logado()) {
           return;
         } else {
 
-          alert("Dados alterados com sucesso!");  
+          alert("Dados alterados com sucesso!");
 
         }
 

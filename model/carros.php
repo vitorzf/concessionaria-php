@@ -29,7 +29,7 @@ function lista_tipos_carros()
         $filtro .= " AND t.visivel = 1";
     }
 
-    $sql = "SELECT * 
+    $sql = "SELECT *
             from tipo_carro t
             {$filtro}
             order by t.nome asc";
@@ -81,17 +81,16 @@ function filtro_tipo_carros(){
 
     $resultados = $GLOBALS['database']->retornaLista($sql);
 
+    if(empty($resultados)){
 
-    if(!$resultados){
-        die(json_encode(['erro' => true]));
+      return "<option value=\"default\">Nenhuma opção encontrada</option>";
     }
 
     $html = "";
-
     foreach($resultados as $resultado){
+
         $html .= "<option value=\"{$resultado->id}\">{$resultado->nome}</option>";
     }
-
     if(empty($html)){
         $html = "<option value=\"default\">Nenhuma opção encontrada</option>";
     }else{
@@ -133,7 +132,7 @@ function criar_alterar_carro(){
     ];
 
     if(empty($id)){
-        
+
         $result = $GLOBALS['database']->insert("carro", $dados);
 
         if ($result) {
@@ -144,7 +143,7 @@ function criar_alterar_carro(){
     }else{
 
         $dados_carro = dados_carro($id);
-        
+
         if($dados_carro->estoque != $dados['estoque']){
             registrar_movimentacao_estoque($id, $dados_carro->estoque, $dados['estoque']);
         }
@@ -206,7 +205,7 @@ function detalhes_carro()
                 c.fotos,
                 c.valor,
                 tc.nome as tipo_carro
-            
+
             FROM carro c
             inner join tipo_carro tc on tc.id = c.tipo_id
             where c.id = '{$id}'";
@@ -269,7 +268,7 @@ function detalhes_carro()
                   <span class=\"sr-only\">Next</span>
                 </a>
               </div>
-              
+
             </div>
           </div>
           <div class=\"col-xs-12 col-sm-12 col-md-6 col-lg-6\">
@@ -366,10 +365,10 @@ function lista_carros_home(){
             </div>
         </div>";
     }
-    
+
 
     echo json_encode(['erro' => false, 'html' => $html]);
-    
+
 }
 
 function lista_carros()
@@ -385,7 +384,7 @@ function lista_carros()
 
         $filtro = "WHERE lower(c.{$params->tipo}) like '%{$pesquisa}%'";
     }
-    
+
     $tipo = post("tipo_carro");
 
     if(!empty($tipo)){
@@ -395,13 +394,13 @@ function lista_carros()
             $filtro = " WHERE c.tipo_id = '{$tipo}' ";
         }
     }
-    
+
     if (!empty($filtro)) {
         $filtro .= " AND c.visivel = 1 ";
     } else {
         $filtro = " WHERE c.visivel = 1 ";
     }
-    
+
     $sql = "SELECT c.*,
             tc.nome as tipo_carro
             from carro c
@@ -410,7 +409,7 @@ function lista_carros()
             order by c.nome asc";
 
     $resultados = $GLOBALS['database']->retornaLista($sql);
-    
+
     $html = "";
 
     if (empty($resultados)) {
@@ -503,7 +502,7 @@ function excluir_tipo_carro(){
     $id = post("id");
 
     $dados = [
-        'visivel' => 0    
+        'visivel' => 0
     ];
 
     $result = $GLOBALS['database']->update('tipo_carro', $dados, ["id" => $id]);
@@ -544,7 +543,7 @@ function excluir_carro(){
     $id = post("id");
 
     $dados = [
-        'visivel' => 0    
+        'visivel' => 0
     ];
 
     $result = $GLOBALS['database']->update('carro', $dados, ["id" => $id]);

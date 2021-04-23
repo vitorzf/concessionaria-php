@@ -8,7 +8,7 @@
 
             $this->debug = $debug;
 
-            $this->db = new mysqli("sql10.freemysqlhosting.net", "sql10405941", "GLwHZDqbN7", "sql10405941", "3306");
+            $this->db = new mysqli("localhost", "root", "", "concessionaria");
 
             if($this->db->connect_errno){
                 throw new Exception("Erro ao conectar no banco de dados:\n {$this->db->connect_error}", 1);
@@ -34,7 +34,7 @@
                     }else{
                         return false;
                     }
-                    
+
                 } else {
                     $busca = mysqli_query($this->db, $sql);
 
@@ -55,12 +55,12 @@
 
             if (!empty($sql)) {
                 if (!mysqli_query($this->db, $sql)) {
-                    if ($this->debug) {
+                    // if ($this->debug) {
                         $err = mysqli_error($this->db);
                         throw new Exception("Erro: {$err}", 1);
-                    } else {
-                        return false;
-                    }
+                    // } else {
+                    //     return false;
+                    // }
                 } else {
                     $busca = mysqli_query($this->db, $sql);
 
@@ -139,7 +139,7 @@
             }
 
             $set = rtrim($set, ",");
-        
+
             $condition = "";
 
             if(!empty($where)){
@@ -175,7 +175,7 @@
 
         public function insert($tabela = null, $campos = null, $last_id = false){
 
-            
+
             if(empty($tabela)){
                 throw new Exception("Erro: Tabela não especificada", 1);
                 exit();
@@ -203,7 +203,7 @@
             $_valores = implode("','", $_valores);
 
             $sql = "INSERT INTO {$tabela}({$_campos}) VALUES ('{$_valores}')";
-            
+
             if ($this->db->query($sql) === TRUE) {
 
                 if($last_id){
