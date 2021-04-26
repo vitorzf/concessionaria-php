@@ -1991,6 +1991,19 @@ if (!$session->logado()) {
   }
 
   function criar_cliente() {
+
+    $('#idCliente').val("");
+    $('#txtNomeCliente').val("");
+    $('#txtEmailCliente').val("");
+    $('#txtRGCliente').val("");
+    $('#txtCPFCliente').val("");
+    $('#txtTelefoneCliente').val("");
+    $('#cmbEstadoCliente').val("default");
+    $('#txtCidadeCliente').val("");
+    $('#txtRuaCliente').val("");
+    $('#txtNumeroCliente').val("");
+    $('#txtBairroCliente').val("");
+    $('#txtCEPCliente').val("");
     $('#tituloModalCliente').html("Cadastrar cliente");
     $('#modalCliente').modal("show");
   }
