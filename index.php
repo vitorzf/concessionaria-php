@@ -31,6 +31,13 @@ if (!empty($p[1])) {
         $z[3]();
         die();
     }
+    if ($z[0] == "assets") {
+
+        $caminho = getcwd() . "/$p[1]";
+        header('Content-type: '.mime_content_type($caminho));
+        readfile($caminho);
+        exit;
+    }
 }
 
 

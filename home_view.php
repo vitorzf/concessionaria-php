@@ -1,3 +1,20 @@
+<style>
+    .font-bold {
+        font-weight: bold !important;
+    }
+
+    .tarja-estoque {
+        font-size: 20px;
+        text-transform: uppercase;
+        width: 100%;
+        text-align: center;
+        background: rgb(0, 0, 0);
+        background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 212, 255, 0) 100%);
+        height: 50px;
+        padding-top: 20px;
+        color:white;
+    }
+</style>
 <div class="container-fluid">
     <div class="row">
         <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">

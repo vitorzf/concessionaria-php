@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.8.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 23-Abr-2021 às 02:01
--- Versão do servidor: 10.1.38-MariaDB
--- versão do PHP: 7.3.2
+-- Generation Time: 27-Abr-2021 às 01:20
+-- Versão do servidor: 10.1.37-MariaDB
+-- versão do PHP: 7.2.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -32,7 +32,7 @@ CREATE TABLE `carro` (
   `id` int(11) NOT NULL,
   `nome` varchar(240) NOT NULL,
   `modelo` varchar(20) NOT NULL,
-  `valor` float NOT NULL,
+  `valor` decimal(10,2) NOT NULL,
   `cor` varchar(50) NOT NULL,
   `estoque` int(11) NOT NULL DEFAULT '0',
   `tipo_id` int(11) NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE `carro` (
 --
 
 INSERT INTO `carro` (`id`, `nome`, `modelo`, `valor`, `cor`, `estoque`, `tipo_id`, `visivel`, `marca`, `fotos`) VALUES
-(1, 'Porsche Cayman', '2.7 I6 24V GASOLINA ', 800000, 'Prata', 1, 3, 1, 'Porsche', '[{\"url\":\"https://imganuncios.mitula.net/porsche_2020_gasolina_porsche_718_cayman_2_0_300cv_2020_gasolina_prata_5900109612447077903.jpg\"},{\"url\":\"https://i.pinimg.com/736x/de/c2/18/dec2182bf9155e5ec0e39f1ef85ae965.jpg\"}]');
+(1, 'Porsche Cayman', '2.7 I6 24V GASOLINA ', '850000.00', 'Prata', 1, 3, 1, 'Porsche', '[{\"url\":\"https://imganuncios.mitula.net/porsche_2020_gasolina_porsche_718_cayman_2_0_300cv_2020_gasolina_prata_5900109612447077903.jpg\"},{\"url\":\"https://i.pinimg.com/736x/de/c2/18/dec2182bf9155e5ec0e39f1ef85ae965.jpg\"}]');
 
 -- --------------------------------------------------------
 
@@ -90,7 +90,7 @@ CREATE TABLE `dados_cliente` (
 --
 
 INSERT INTO `dados_cliente` (`id`, `nome`, `email`, `telefone`, `RG`, `CPF`, `endereco_id`, `data_registro`, `data_alteracao`) VALUES
-(1, 'Vitor', 'vitor@gmail.com', 2147483647, 45855922, 2147483647, 1, '2021-04-22 23:48:33', NULL);
+(1, 'Vitor', 'vitor@gmail.com', 2147483647, 45855922, 2147483647, 1, '2021-04-22 23:48:33', '2021-04-27');
 
 -- --------------------------------------------------------
 
@@ -112,7 +112,8 @@ CREATE TABLE `dados_funcionario` (
 
 INSERT INTO `dados_funcionario` (`id`, `nome`, `CPF`, `RG`, `telefone`) VALUES
 (3, 'Cayque', 78963245, 546210217, '40028922'),
-(4, 'Valdir', 2147483647, 15785562, '14988562214');
+(4, 'Valdir', 2147483647, 15785562, '14988562214'),
+(5, 'Vendedor Teste', 2147483647, 15488520, '14998905233');
 
 -- --------------------------------------------------------
 
@@ -135,7 +136,7 @@ CREATE TABLE `endereco` (
 --
 
 INSERT INTO `endereco` (`id`, `rua`, `bairro`, `cidade`, `estado`, `numero`, `cep`) VALUES
-(1, 'AmÃ©lia Volta Laplechade', 'Jardim MarÃ­lia', 'MarÃ­lai', 'SP', 57, '17511802');
+(1, 'AmÃ©lia Volta Laplechade', 'Jardim MarÃ­lia', 'MarÃ­lia', 'SP', 57, '17511802');
 
 -- --------------------------------------------------------
 
@@ -158,7 +159,8 @@ CREATE TABLE `funcionario` (
 
 INSERT INTO `funcionario` (`id`, `id_dados_funcionario`, `email`, `senha`, `gerente`, `ativo`) VALUES
 (1, 3, 'cayque.142@gmail.com', '202cb962ac59075b964b07152d234b70', 1, 1),
-(2, 4, 'valdir@unimar.br', '202cb962ac59075b964b07152d234b70', 1, 1);
+(2, 4, 'valdir@unimar.br', '202cb962ac59075b964b07152d234b70', 1, 1),
+(3, 5, 'vendas@vivc.com.br', '202cb962ac59075b964b07152d234b70', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -185,6 +187,15 @@ CREATE TABLE `movimentacao_estoque` (
   `data` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `estoque_anterior` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `movimentacao_estoque`
+--
+
+INSERT INTO `movimentacao_estoque` (`id`, `novo_estoque`, `carro_id`, `gerente_id`, `data`, `estoque_anterior`) VALUES
+(1, 3, 1, 2, '2021-04-26 22:39:56', 1),
+(2, 2, 1, 2, '2021-04-26 22:42:42', 3),
+(3, 1, 1, 2, '2021-04-26 22:44:22', 2);
 
 -- --------------------------------------------------------
 
@@ -221,10 +232,18 @@ CREATE TABLE `vendas` (
   `funcionario_id` int(10) NOT NULL,
   `total_venda` float NOT NULL,
   `quantidade` float NOT NULL,
-  `data` date NOT NULL,
+  `data` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `forma_pagto` varchar(255) NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '1'
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  `observacoes` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `vendas`
+--
+
+INSERT INTO `vendas` (`id`, `cliente_id`, `carro_id`, `gerente_id`, `funcionario_id`, `total_venda`, `quantidade`, `data`, `forma_pagto`, `status`, `observacoes`) VALUES
+(2, 1, 1, 2, 3, 850000, 1, '2021-04-26 22:44:22', 'credito', 1, 'Teste de venda');
 
 --
 -- Indexes for dumped tables
@@ -326,7 +345,7 @@ ALTER TABLE `dados_cliente`
 -- AUTO_INCREMENT for table `dados_funcionario`
 --
 ALTER TABLE `dados_funcionario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `endereco`
@@ -338,7 +357,7 @@ ALTER TABLE `endereco`
 -- AUTO_INCREMENT for table `funcionario`
 --
 ALTER TABLE `funcionario`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `metodo_pagamento`
@@ -350,7 +369,7 @@ ALTER TABLE `metodo_pagamento`
 -- AUTO_INCREMENT for table `movimentacao_estoque`
 --
 ALTER TABLE `movimentacao_estoque`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tipo_carro`
@@ -362,7 +381,7 @@ ALTER TABLE `tipo_carro`
 -- AUTO_INCREMENT for table `vendas`
 --
 ALTER TABLE `vendas`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables

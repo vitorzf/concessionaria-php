@@ -204,6 +204,7 @@ function detalhes_carro()
                 c.marca,
                 c.fotos,
                 c.valor,
+                c.estoque,
                 tc.nome as tipo_carro
 
             FROM carro c
@@ -224,20 +225,22 @@ function detalhes_carro()
     $div_fotos = "";
 
     $fotos = json_decode($detalhes->fotos);
-    foreach ($fotos as $pos => $foto) {
-        $active = "";
-        $class_active = "";
-        if ($pos == 0) {
-            $active = "class=\"active\"";
-            $class_active = "active";
+    
+    if(!empty($fotos)){
+    
+        foreach ($fotos as $pos => $foto) {
+            $active = "";
+            $class_active = "";
+            if ($pos == 0) {
+                $active = "class=\"active\"";
+                $class_active = "active";
+            }
+            $li_carrossel .= "<li data-target=\"#carouselExampleIndicators\" data-slide-to=\"{$pos}\" {$active}></li>";
+    
+            $div_fotos .= "<div class=\"carousel-item {$class_active}\">
+                            <img src=\"{$foto->url}\" class=\"d-block w-100\">
+                        </div>";
         }
-        $li_carrossel .= "<li data-target=\"#carouselExampleIndicators\" data-slide-to=\"{$pos}\" {$active}></li>";
-
-
-
-        $div_fotos .= "<div class=\"carousel-item {$class_active}\">
-                        <img src=\"{$foto->url}\" class=\"d-block w-100\">
-                    </div>";
     }
 
     $hide_carrossel = "";
@@ -247,6 +250,8 @@ function detalhes_carro()
     }
 
     $valor_carro = number_format($detalhes->valor, 2, ",", ".");
+    
+    $estoque = ($detalhes->estoque == 0 ? "Sem estoque" : $detalhes->estoque);
 
     $html = "<div class=\"row\">
           <div class=\"col-xs-12 col-sm-12 col-md-6 col-lg-6\" {$hide_carrossel}>
@@ -278,6 +283,7 @@ function detalhes_carro()
               <span class=\"font-bold\">Cor: </span>{$detalhes->cor}<br />
               <span class=\"font-bold\">Marca: </span>{$detalhes->marca}<br />
               <span class=\"font-bold\">Valor: </span>{$valor_carro}<br />
+              <span class=\"font-bold\">Estoque: </span>{$estoque}<br />
           </div>
         </div>";
 
@@ -341,17 +347,24 @@ function lista_carros_home(){
     foreach($carros as $carro){
 
         $fotos = json_decode($carro->fotos);
-
-        $foto_principal = $fotos[0]->url;
+           
+        $foto_principal = (empty($fotos[0]->url)? $GLOBALS['config']->base_url("assets/imagens/sem-foto.jpg") : $fotos[0]->url);
 
         $valor = number_format($carro->valor, 2, ",", ".");
         $nome_carro = "{$carro->nome} {$carro->modelo}";
 
+        $tarjaSemEstoque = "";
+        
+        if($carro->estoque == 1){
+            $tarjaSemEstoque = "<p class=\"tarja-estoque\">Sem Estoque</p>";
+        }
+
         $html .= "
-        <div class=\"col-sm-6 col-md-4 col-lg-4 py-2\">
+        <div class=\"col-sm-6 col-md-6 col-lg-4 py-2\">
             <div class=\"card h-100 \">
                 <div class=\"card-body\">
                     <img style=\"height: 270px; width: 100%; object-fit: cover; object-position: center;\" src=\"$foto_principal\">
+                    {$tarjaSemEstoque}
                     <h3 style=\"margin-top:15px;\" class=\"card-title text-center\">{$nome_carro}</h3>
                     <div class=\"row\">
                         <div class=\"col-xs-12 col-sm-12 col-md-8 col-lg-8 text-center\">
@@ -535,7 +548,7 @@ function buscar_dados_carro(){
     $resultado->foto4 = (!empty($fotos[3]->url) ? $fotos[3]->url : '');
 
     unset($resultado->fotos);
-
+    
     echo json_encode(['erro' => false, 'dados' => $resultado]);
 }
 
